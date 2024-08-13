@@ -36,6 +36,14 @@ else
     echo "Removing kde-service-menu-reimage locally"
 fi
 
+# ensure all required variables are set
+for var in "${required_vars[@]}"; do
+    if [ -z "${!var}" ]; then
+        echo "ERROR: Required variable ${var} was not set successfully. Aborting installation of kde-service-menu-reimage."
+        exit 1
+    fi
+done
+
 echo "removing ${bin_dir}reimage-kdialog"
 rm "${bin_dir}/reimage-kdialog"
 
