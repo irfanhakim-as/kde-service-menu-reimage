@@ -44,9 +44,9 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
-sudo install -m 755 bin/* "${bin_dir}"
-sudo install -m 644 ServiceMenus/*.desktop "${desktop_dir}"
-sudo install -d "${doc_dir}"
-sudo install -m 644 doc/* "${doc_dir}"
+install -m 755 bin/* "${bin_dir}"
+install -m 644 ServiceMenus/*.desktop "${desktop_dir}"
+install -d "${doc_dir}"
+install -m 644 doc/* "${doc_dir}"
 
 echo "Done!. kde-service-menu-reimage has been installed. Enjoy!"
