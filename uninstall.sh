@@ -62,4 +62,4 @@ echo "removing ${doc_dir}"
 rm -rf "${doc_dir}"
 
 echo
-echo "kde-service-menu-reimage has been removed. Good bye."
+echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
