@@ -44,6 +44,8 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
+echo "Installing kde-service-menu-reimage (${install_mode}) ..."
+
 install -mp 755 bin/* "${bin_dir}"
 install -mp 644 ServiceMenus/*.desktop "${desktop_dir}"
 install -d "${doc_dir}"

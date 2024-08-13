@@ -44,6 +44,8 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
+echo "Uninstalling kde-service-menu-reimage (${install_mode}) ..."
+
 echo "removing ${bin_dir}reimage-kdialog"
 rm "${bin_dir}/reimage-kdialog"
 
