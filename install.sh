@@ -19,6 +19,7 @@
 
 # environment variables
 qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
+user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
 if [[ $EUID -eq 0 ]]; then
     bin_dir="$(kf5-config --path exe | sed "s/.*://")"
