@@ -22,14 +22,14 @@ qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
 user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
 if [[ $EUID -eq 0 ]]; then
-    bin_dir="$(kf5-config --path exe | sed "s/.*://")"
-    desktop_dir="$(kf5-config --path services | sed "s/.*://")ServiceMenus/"
-    doc_dir="$(kf5-config --prefix)/share/doc/kde-service-menu-reimage/"
+    bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
+    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
+    doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
     echo "Installing kde-service-menu-reimage system wide"
 else
-    bin_dir="$HOME/bin"
-    desktop_dir="$(kf5-config --path services | sed "s/:.*//")"
-    doc_dir=$HOME"/share/doc/kde-service-menu-reimage/"
+    bin_dir="${user_install_prefix}/bin"
+    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
+    doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
     echo "Installing kde-service-menu-reimage locally"
 fi
 
