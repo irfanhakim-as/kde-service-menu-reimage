@@ -46,6 +46,7 @@ done
 
 echo "Installing kde-service-menu-reimage (${install_mode}) ..."
 
+install -d "${bin_dir}"
 install -mp 755 bin/* "${bin_dir}"
 install -mp 644 ServiceMenus/*.desktop "${desktop_dir}"
 install -d "${doc_dir}"
