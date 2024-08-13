@@ -18,7 +18,7 @@
 #
 
 # environment variables
-qtpaths_binary="${qtpaths_binary:-"qtpaths6"}"
+qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
 
 if [[ $EUID -eq 0 ]]; then
     bin_dir="$(kf5-config --path exe | sed "s/.*://")"
