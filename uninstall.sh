@@ -24,6 +24,7 @@ user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 # local variables
 required_vars=("bin_dir" "desktop_dir" "doc_dir")
 
+# determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
     desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
@@ -46,9 +47,11 @@ done
 
 echo "Uninstalling kde-service-menu-reimage (${install_mode}) ..."
 
+# remove required binaries
 echo "removing ${bin_dir}reimage-kdialog"
 rm "${bin_dir}/reimage-kdialog"
 
+# remove required service menus
 echo "removing ${desktop_dir}reimage-compress-resize.desktop"
 rm "${desktop_dir}reimage-compress-resize.desktop"
 echo "removing ${desktop_dir}reimage-convert-rotate.desktop"
@@ -58,6 +61,7 @@ rm "${desktop_dir}reimage-metadata.desktop"
 echo "removing ${desktop_dir}reimage-tools.desktop"
 rm "${desktop_dir}reimage-tools.desktop"
 
+# remove documentation files
 echo "removing ${doc_dir}"
 rm -rf "${doc_dir}"
 

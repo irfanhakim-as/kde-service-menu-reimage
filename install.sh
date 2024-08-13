@@ -24,6 +24,7 @@ user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 # local variables
 required_vars=("bin_dir" "desktop_dir" "doc_dir")
 
+# determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
     desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
@@ -46,9 +47,12 @@ done
 
 echo "Installing kde-service-menu-reimage (${install_mode}) ..."
 
+# install required binaries
 install -d "${bin_dir}"
 install -mp 755 bin/* "${bin_dir}"
+# install required service menus
 install -mp 644 ServiceMenus/*.desktop "${desktop_dir}"
+# install documentation files
 install -d "${doc_dir}"
 install -mp 644 doc/* "${doc_dir}"
 
