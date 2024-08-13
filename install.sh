@@ -17,6 +17,9 @@
 # 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# environment variables
+qtpaths_binary="${qtpaths_binary:-"qtpaths6"}"
+
 if [[ $EUID -eq 0 ]]; then
     bin_dir="$(kf5-config --path exe | sed "s/.*://")"
     desktop_dir="$(kf5-config --path services | sed "s/.*://")ServiceMenus/"
