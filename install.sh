@@ -22,17 +22,17 @@ qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
 user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
 # local variables
-required_vars=("bin_dir" "desktop_dir" "doc_dir")
+required_vars=("bin_dir" "servicemenu_dir" "doc_dir")
 
 # determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
-    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
     doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
     install_mode="system"
 else
     bin_dir="${user_install_prefix}/bin"
-    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
     doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
     install_mode="local"
 fi
@@ -51,7 +51,7 @@ echo "Installing kde-service-menu-reimage (${install_mode}) ..."
 install -d "${bin_dir}"
 install -mp 755 bin/* "${bin_dir}"
 # install required service menus
-install -mp 644 ServiceMenus/*.desktop "${desktop_dir}"
+install -mp 644 ServiceMenus/*.desktop "${servicemenu_dir}"
 # install documentation files
 install -d "${doc_dir}"
 install -mp 644 doc/* "${doc_dir}"

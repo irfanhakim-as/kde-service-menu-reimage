@@ -22,17 +22,17 @@ qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
 user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
 # local variables
-required_vars=("bin_dir" "desktop_dir" "doc_dir")
+required_vars=("bin_dir" "servicemenu_dir" "doc_dir")
 
 # determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
-    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
     doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
     install_mode="system"
 else
     bin_dir="${user_install_prefix}/bin"
-    desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
     doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
     install_mode="local"
 fi
@@ -52,14 +52,14 @@ echo "removing ${bin_dir}reimage-kdialog"
 rm "${bin_dir}/reimage-kdialog"
 
 # remove required service menus
-echo "removing ${desktop_dir}reimage-compress-resize.desktop"
-rm "${desktop_dir}reimage-compress-resize.desktop"
-echo "removing ${desktop_dir}reimage-convert-rotate.desktop"
-rm "${desktop_dir}reimage-convert-rotate.desktop"
-echo "removing ${desktop_dir}reimage-metadata.desktop"
-rm "${desktop_dir}reimage-metadata.desktop"
-echo "removing ${desktop_dir}reimage-tools.desktop"
-rm "${desktop_dir}reimage-tools.desktop"
+echo "removing ${servicemenu_dir}reimage-compress-resize.desktop"
+rm "${servicemenu_dir}reimage-compress-resize.desktop"
+echo "removing ${servicemenu_dir}reimage-convert-rotate.desktop"
+rm "${servicemenu_dir}reimage-convert-rotate.desktop"
+echo "removing ${servicemenu_dir}reimage-metadata.desktop"
+rm "${servicemenu_dir}reimage-metadata.desktop"
+echo "removing ${servicemenu_dir}reimage-tools.desktop"
+rm "${servicemenu_dir}reimage-tools.desktop"
 
 # remove documentation files
 echo "removing ${doc_dir}"
