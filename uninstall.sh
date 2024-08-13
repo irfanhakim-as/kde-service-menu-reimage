@@ -65,5 +65,4 @@ rm "${servicemenu_dir}reimage-tools.desktop"
 echo "removing ${doc_dir}"
 rm -rf "${doc_dir}"
 
-echo
 echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
