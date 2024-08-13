@@ -23,6 +23,7 @@ user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
 # local variables
 required_vars=("bin_dir" "servicemenu_dir" "doc_dir")
+servicemenu_files=($(shopt -s nullglob; for f in ServiceMenus/*.desktop; do basename "${f}"; done))
 
 # determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
