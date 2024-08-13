@@ -21,6 +21,9 @@
 qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
 user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
 
+# local variables
+required_vars=("bin_dir" "desktop_dir" "doc_dir")
+
 if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
     desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
