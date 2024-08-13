@@ -29,28 +29,6 @@ else
     echo "Installing kde-service-menu-reimage locally"
 fi
 
-## INSTALLING
-# if [ ! -d "${bin_dir}" ]; then
-#     echo "Making directory ${bin_dir}"
-#     mkdir -p "${bin_dir}"
-# fi
-# echo "Copy files to ${bin_dir}"
-# cp bin/encfs-kdialog ${bin_dir}
-#
-# if [ ! -d "${desktop_dir}" ]; then
-#     echo "Making directory ${desktop_dir}"
-#     mkdir -p "${desktop_dir}"
-# fi
-# echo "Copy files to ${desktop_dir}"
-# cp ServiceMenus/encfs.desktop ${desktop_dir}
-#
-# if [ ! -d "${doc_dir}" ]; then
-#     echo "Making directory ${doc_dir}"
-#     mkdir -p "${doc_dir}"
-# fi
-# echo "Copy files to ${doc_dir}"
-# cp doc/* ${doc_dir}
-
 sudo install -m 755 bin/* "${bin_dir}"
 sudo install -m 644 ServiceMenus/*.desktop "${desktop_dir}"
 sudo install -d "${doc_dir}"
