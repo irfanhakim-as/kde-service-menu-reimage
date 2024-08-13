@@ -1,0 +1,52 @@
+The Debian Package kde-service-menu-reimage
+----------------------------
+
+ Description: Manipulate images e their metadata.
+ kde-service-menu-reimage is a package that extends the functionalities of
+ Dolphin/Konqueror adding many additionally sensible menu, reachables with right
+ click on the files. It's similar to gnome nautilus actions.
+ These actions are related to picture files.
+ .
+ Compress and resize
+ Advanced optimization for web
+ Compress in % (change quality)
+ Resize in % or square
+ .
+ Convert and rotate
+ Convert to all formats supported by ImageMagick
+ Convert to PDF or PDF/A-1
+ Generate favicons for browser/android/apple/ms
+ Convert to Base64
+ Generate favicons
+ Rotate
+ Overturn vertically/horizontally
+ .
+ Metadata:
+ Rename jpg and tiff files with data content in Exif metadata.
+ (For example: 001.jpg -> 2018-04-27_133741.jpg)
+ Rename jpg and tiff files with file's data.
+ Set file's datetime from Exif date.
+ Set file date from file's name
+ Set Exif datetime from file's date.
+ Set Exif datetime from file's name.
+ Add comment
+ View metadata
+ Extract metadata to file
+ Delete comment field
+ Strip Exif section
+ Delete IPTC section
+ Delete XMP section
+ Strip all unnecessary data
+ Add timestamp from Exif
+ .
+ Tools
+ Create animated GIF
+ Append to right
+ GrayScale
+ Sepia filter
+ Change transparent to color
+ Add colored border
+ Add transparent border
+ Drop shadow
+ .
+ Copyright (C) 2018-2018 Giuseppe Benigno <giuseppe.benigno@gmail.com>

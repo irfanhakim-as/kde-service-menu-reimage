@@ -1,0 +1,145 @@
+#
+# 	Part of kde-service-menu-reimage Version 2.5
+# 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Actions=jpeg;png;gif;tiff;webp;_SEPARATOR_;pdf;pdfa;_SEPARATOR_;agif;favicons;base64;convert_custom;formats;_SEPARATOR_;rotate_90;rotate_180;rotate_270;rotate_custom;auto;_SEPARATOR_;flip;flop;_SEPARATOR_;
+MimeType=image/*
+Name=ReImage convert and rotate service menu
+ServiceTypes=KonqPopupMenu/Plugin,image/*
+TryExec=reimage-kdialog
+Type=Service
+X-KDE-Submenu=ReImage - Convert and rotate
+X-KDE-Submenu[it]=ReImage - Conversione e rotazione
+
+################################################################################
+
+[Desktop Action gif]
+Exec=reimage-kdialog convert gif %F
+Icon=image-gif
+Name=Convert to GIF
+Name[it]=Converti in GIF
+
+[Desktop Action jpeg]
+Exec=reimage-kdialog convert jpg %F
+Icon=image-jpeg
+Name=Convert to JPEG
+Name[it]=Converti in JPEG
+
+[Desktop Action png]
+Exec=reimage-kdialog convert png %F
+Icon=image-png
+Name=Convert to PNG
+Name[it]=Converti in PNG
+
+[Desktop Action tiff]
+Exec=reimage-kdialog convert tif %F
+Icon=image-tiff
+Name=Convert to TIFF
+Name[it]=Converti in TIFF
+
+[Desktop Action webp]
+Exec=reimage-kdialog convert webp %F
+Icon=image-webp
+Name=Convert to WEBP
+Name[it]=Converti in WEBP
+
+################################################################################
+
+[Desktop Action pdf]
+Exec=reimage-kdialog convert pdf %F
+Icon=application-pdf
+Name=Convert to PDF
+Name[it]=Converti in PDF
+
+[Desktop Action pdfa]
+Exec=reimage-kdialog convert pdfa %F
+Icon=application-pdf
+Name=Convert to PDF/A-1
+Name[it]=Converti in PDF/A-1
+
+################################################################################
+
+[Desktop Action favicons]
+Exec=reimage-kdialog favicons all %F
+Icon=image-ico
+Name=Generate favicons
+Name[it]=Genera favicons
+
+[Desktop Action base64]
+Exec=for i in %F; do cat "$i" | base64 -w0 > "$i".base64; done
+Icon=text-plain
+Name=Convert to Base64
+Name[it]=Converti in Base64
+
+[Desktop Action convert_custom]
+Exec=reimage-kdialog convert custom %F
+Icon=image
+Name=Convert to format ...
+Name[it]=Formato personalizzato ...
+
+[Desktop Action formats]
+Exec=reimage-kdialog convert formats
+Icon=view-list-text
+Name=Formats list
+Name[it]=Elenco formati
+
+################################################################################
+
+[Desktop Action rotate_90]
+Exec=reimage-kdialog rotate 90 %F
+Icon=image-rotate-right-symbolic
+Name=Rotate 90°
+Name[it]=Ruota di 90°
+
+[Desktop Action rotate_180]
+Exec=reimage-kdialog rotate 180 %F
+Icon=image-rotate-right-symbolic
+Name=Rotate 180°
+Name[it]=Ruota di 180°
+
+[Desktop Action rotate_270]
+Exec=reimage-kdialog rotate 270 %F
+Icon=image-rotate-left-symbolic
+Name=Rotate (-90°)
+Name[it]=Ruota di -90°
+
+[Desktop Action rotate_custom]
+Exec=reimage-kdialog rotate custom %F
+Icon=view-refresh
+Name=Rotate custom
+Name[it]=Angolo personalizzato
+
+[Desktop Action auto]
+Exec=reimage-kdialog rotate auto %F
+Icon=view-refresh
+Name=Auto-rotate with Exif
+Name[it]=Auto-ruota tramite dati Exif
+
+################################################################################
+
+[Desktop Action flip]
+Exec=reimage-kdialog overturn flip %F
+Icon=image-flip-vertical-symbolic
+Name=Overturn vertically
+Name[it]=Ribalta verticalmente
+
+[Desktop Action flop]
+Exec=reimage-kdialog overturn flop %F
+Icon=image-flip-horizontal-symbolic
+Name=Overturn horizontally
+Name[it]=Ribalta orizzontalmente

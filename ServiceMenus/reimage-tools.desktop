@@ -1,0 +1,81 @@
+#
+# 	Part of kde-service-menu-reimage Version 2.5
+# 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Actions=agif;append_right;_SEPARATOR_;gray;sepia;transparent2color;_SEPARATOR_;border;border_transparent;shadow;_SEPARATOR_;
+MimeType=image/*
+Name=ReImage tools service menu
+ServiceTypes=KonqPopupMenu/Plugin,image/*
+TryExec=reimage-kdialog
+Type=Service
+X-KDE-Submenu=ReImage - Tools
+X-KDE-Submenu[it]=ReImage - Utilità
+
+################################################################################
+
+[Desktop Action agif]
+Exec=reimage-kdialog agif %F
+Icon=video-x-mp4
+Name=Create animated GIF
+Name[it]=Crea GIF animata
+
+[Desktop Action append_right]
+Exec=reimage-kdialog montage %F
+Icon=image-flip-horizontal-symbolic
+Name=Append to right
+Name[it]=Appendi immagine a destra
+
+################################################################################
+
+[Desktop Action gray]
+Exec=reimage-kdialog colorspace gray %F
+Icon=viewimage
+Name=GrayScale
+Name[it]=Scala di grigi
+
+[Desktop Action sepia]
+Exec=reimage-kdialog sepia 80% %F
+Icon=color-management
+Name=Sepia
+Name[it]=Seppia
+
+[Desktop Action transparent2color]
+Exec=reimage-kdialog transparent2color %F
+Icon=backgroundtool
+Name=Change transparent to color
+Name[it]=Cambia trasparenza a colore
+
+################################################################################
+
+[Desktop Action border]
+Exec=reimage-kdialog border custom %F
+Icon=bordertool
+Name=Add colored border
+Name[it]=Aggiungi bordo colorato
+
+[Desktop Action border_transparent]
+Exec=reimage-kdialog border transparent %F
+Icon=box
+Name=Add transparent border
+Name[it]=Aggiungi bordo trasparente
+
+[Desktop Action shadow]
+Exec=reimage-kdialog shadow %F
+Icon=bwtonal
+Name=Drop shadow
+Name[it]=Aggiungi ombra

@@ -1,0 +1,155 @@
+#
+# 	Part of kde-service-menu-reimage Version 2.5
+# 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Actions=progressive;optimize;_SEPARATOR_;compress_50;compress_70;compress_75;compress_80;compress_90;custom_compress;_SEPARATOR_;resize_25;resize_50;resize_75;_SEPARATOR_;300x225;600x450;800x600;1024x768;1200x900;1400x1050;1920x1080;custom_resize;_SEPARATOR_;
+MimeType=image/*
+Name=ReImage compress and resize service menu
+ServiceTypes=KonqPopupMenu/Plugin,image/*
+TryExec=reimage-kdialog
+Type=Service
+X-KDE-Submenu=ReImage - Compress and resize
+X-KDE-Submenu[it]=ReImage - Compressione e ridimensionamento
+
+################################################################################
+
+[Desktop Action progressive]
+Exec=reimage-kdialog progressive %F
+Icon=viewhtml
+Name=Make progressive
+Name[it]=Rendi progressiva
+
+[Desktop Action optimize]
+Exec=reimage-kdialog optimize %F
+Icon=viewhtml
+Name=Complete optimization for web
+Name[it]=Ottimizzazione completa per il web
+
+[Desktop Action compress_50]
+Exec=reimage-kdialog compress 50% %F
+Icon=application-x-compressed-tar
+Name=Compress at 50%
+Name[it]=Comprimi al 50%
+
+[Desktop Action compress_70]
+Exec=reimage-kdialog compress 70% %F
+Icon=application-x-compressed-tar
+Name=Compress at 70%
+Name[it]=Comprimi al 70%
+
+[Desktop Action compress_75]
+Exec=reimage-kdialog compress 75% %F
+Icon=application-x-compressed-tar
+Name=Compress at 75%
+Name[it]=Comprimi al 75%
+
+[Desktop Action compress_80]
+Exec=reimage-kdialog compress 80% %F
+Icon=application-x-compressed-tar
+Name=Compress at 80%
+Name[it]=Comprimi al 80%
+
+[Desktop Action compress_90]
+Exec=reimage-kdialog compress 90% %F
+Icon=application-x-compressed-tar
+Name=Compress at 90%
+Name[it]=Comprimi al 90%
+
+[Desktop Action custom_compress]
+Exec=reimage-kdialog compress custom %F
+Icon=application-x-compressed-tar
+Name=Custom quality
+Name[it]=Qualità personalizzata
+
+################################################################################
+
+[Desktop Action resize_25]
+Exec=reimage-kdialog resize 25% %F
+Icon=image-resize-symbolic
+Name=Resize at 25%
+Name[it]=Ridimensiona al 25%
+
+[Desktop Action resize_50]
+Exec=reimage-kdialog resize 50% %F
+Icon=image-resize-symbolic
+Name=Resize at 50%
+Name[it]=Ridimensiona al 50%
+
+[Desktop Action resize_75]
+Exec=reimage-kdialog resize 75% %F
+Icon=image-resize-symbolic
+Name=Resize at 75%
+Name[it]=Ridimensiona al 75%
+
+################################################################################
+
+[Desktop Action 300x225]
+Exec=reimage-kdialog resize 300x225 %F
+Icon=image-resize-symbolic
+Name=Resize at 300x225 px
+Name[it]=Ridimensiona a 300x225 px
+
+[Desktop Action 600x450]
+Exec=reimage-kdialog resize 600x450 %F
+Icon=image-resize-symbolic
+Name=Resize at 600x450 px
+Name[it]=Ridimensiona a 600x450 px
+
+[Desktop Action 640x480]
+Exec=reimage-kdialog resize 640x480 %F
+Icon=image-resize-symbolic
+Name=Resize at 640x480 px
+Name[it]=Ridimensiona a 640x480 px
+
+[Desktop Action 800x600]
+Exec=reimage-kdialog resize 800x600 %F
+Icon=image-resize-symbolic
+Name=Resize at 800x600 px
+Name[it]=Ridimensiona a 800x600 px
+
+[Desktop Action 1024x768]
+Exec=reimage-kdialog resize 1024x768 %F
+Icon=image-resize-symbolic
+Name=Resize at 1024x768 px
+Name[it]=Ridimensiona a 1024x768 px
+
+[Desktop Action 1200x900]
+Exec=reimage-kdialog resize 1200x900 %F
+Icon=image-resize-symbolic
+Name=Resize at 1200x900 px
+Name[it]=Ridimensiona a 1200x900 px
+
+[Desktop Action 1400x1050]
+Exec=reimage-kdialog resize 1400x1050 %F
+Icon=image-resize-symbolic
+Name=Resize at 1400x1050 px
+Name[it]=Ridimensiona a 1400x1050 px
+
+[Desktop Action 1920x1080]
+Exec=reimage-kdialog resize 1920x1080 %F
+Icon=image-resize-symbolic
+Name=Resize at 1920x1080 px
+Name[it]=Ridimensiona a 1920x1080 px
+
+################################################################################
+
+[Desktop Action custom_resize]
+Exec=reimage-kdialog resize custom %F
+Icon=image-resize-symbolic
+Name=Custom resize
+Name[it]=Ridimensionamento personalizzato

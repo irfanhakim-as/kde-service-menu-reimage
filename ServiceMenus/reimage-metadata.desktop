@@ -1,0 +1,129 @@
+#
+# 	Part of kde-service-menu-reimage Version 2.5
+# 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+#
+# 	This program is free software: you can redistribute it and/or modify
+# 	it under the terms of the GNU General Public License as published by
+# 	the Free Software Foundation, either version 3 of the License, or
+# 	(at your option) any later version.
+#
+# 	This program is distributed in the hope that it will be useful,
+# 	but WITHOUT ANY WARRANTY; without even the implied warranty of
+# 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# 	GNU General Public License for more details.
+#
+# 	You should have received a copy of the GNU General Public License
+# 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[Desktop Entry]
+Actions=rfe;rff;_SEPARATOR_;sffe;sffn;_SEPARATOR_;seff;sefn;_SEPARATOR_;add_comment;view_metadata;extract_metadata;_SEPARATOR_;del_comment;del_exif;del_iptc;del_xmp;del_all;_SEPARATOR_;tfe;_SEPARATOR_;
+MimeType=image/jpeg;image/tiff;
+Name=ReImage metadata service menu
+ServiceTypes=KonqPopupMenu/Plugin,image/jpeg,image/tiff
+TryExec=reimage-kdialog
+Type=Service
+X-KDE-Submenu=ReImage - Metadata
+X-KDE-Submenu[it]=ReImage - Metadati
+
+################################################################################
+
+[Desktop Action rfe]
+Exec=reimage-kdialog rfe %F
+Icon=edit-rename
+Name=Rename from Exif date
+Name[it]=Rinomina dalla data Exif
+
+[Desktop Action rff]
+Exec=reimage-kdialog rff %F
+Icon=edit-rename
+Name=Rename from file's date
+Name[it]=Rinomina dalla data del file
+
+################################################################################
+
+[Desktop Action sffe]
+Exec=reimage-kdialog sffe %F
+Icon=knotes_date
+Name=Set file date from Exif date
+Name[it]=Imposta la data del file a quella Exif
+
+[Desktop Action sffn]
+Exec=reimage-kdialog sffn %F
+Icon=knotes_date
+Name=Set file date from file's name
+Name[it]=Imposta la data del file a quella del nome
+
+################################################################################
+
+[Desktop Action seff]
+Exec=reimage-kdialog seff %F
+Icon=knotes_date
+Name=Set Exif date from file's date
+Name[it]=Imposta la data Exif a quella del file
+
+[Desktop Action sefn]
+Exec=reimage-kdialog sefn %F
+Icon=knotes_date
+Name=Set Exif date from file's name
+Name[it]=Imposta la data Exif a quella del nome
+
+################################################################################
+
+[Desktop Action add_comment]
+Exec=reimage-kdialog ac %F
+Icon=knotes_date
+Name=Add comment
+Name[it]=Aggiungi un commento
+
+[Desktop Action view_metadata]
+Exec=reimage-kdialog ve %F
+Icon=knotes_date
+Name=View metadata
+Name[it]=Visualizza metadati
+
+[Desktop Action extract_metadata]
+Exec=reimage-kdialog ee %F
+Icon=knotes_date
+Name=Extract metadata to file
+Name[it]=Estrai metadati in un file
+
+################################################################################
+
+[Desktop Action del_comment]
+Exec=reimage-kdialog dc %F
+Icon=knotes_date
+Name=Delete comment field
+Name[it]=Cancella commento
+
+[Desktop Action del_exif]
+Exec=reimage-kdialog de %F
+Icon=knotes_date
+Name=Strip Exif section
+Name[it]=Cancella le informazioni Exif
+
+[Desktop Action del_iptc]
+Exec=reimage-kdialog di %F
+Icon=knotes_date
+Name=Delete IPTC section
+Name[it]=Cancella le informazioni IPTC
+
+[Desktop Action del_xmp]
+Exec=reimage-kdialog dx %F
+Icon=knotes_date
+Name=Delete XMP section
+Name[it]=Cancella le informazioni XMP
+
+[Desktop Action del_all]
+Exec=reimage-kdialog purejpg %F
+Icon=knotes_date
+Name=Strip all unnecessary data
+Name[it]=Cancella tutti i metadati
+
+################################################################################
+
+[Desktop Action tfe]
+Exec=reimage-kdialog timestamp %F
+Icon=knotes_date
+Name=Add timestamp from Exif
+Name[it]=Aggiungi timestamp da Exif
