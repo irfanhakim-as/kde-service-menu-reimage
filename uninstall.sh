@@ -53,14 +53,10 @@ echo "removing ${bin_dir}reimage-kdialog"
 rm "${bin_dir}/reimage-kdialog"
 
 # remove required service menus
-echo "removing ${servicemenu_dir}/reimage-compress-resize.desktop"
-rm "${servicemenu_dir}/reimage-compress-resize.desktop"
-echo "removing ${servicemenu_dir}/reimage-convert-rotate.desktop"
-rm "${servicemenu_dir}/reimage-convert-rotate.desktop"
-echo "removing ${servicemenu_dir}/reimage-metadata.desktop"
-rm "${servicemenu_dir}/reimage-metadata.desktop"
-echo "removing ${servicemenu_dir}/reimage-tools.desktop"
-rm "${servicemenu_dir}/reimage-tools.desktop"
+for file in "${servicemenu_files[@]}"; do
+    echo "Removing ${servicemenu_dir}/${file}"
+    rm "${servicemenu_dir}/${file}"
+done
 
 # remove documentation files
 echo "removing ${doc_dir}"
