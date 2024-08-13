@@ -28,12 +28,12 @@ if [[ ${EUID} -eq 0 ]]; then
     bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
     desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
     doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
-    echo "Installing kde-service-menu-reimage system wide"
+    install_mode="system"
 else
     bin_dir="${user_install_prefix}/bin"
     desktop_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
     doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
-    echo "Installing kde-service-menu-reimage locally"
+    install_mode="local"
 fi
 
 # ensure all required variables are set
