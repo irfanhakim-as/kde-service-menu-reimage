@@ -753,7 +753,7 @@ run_montage () {
 	[ $code -gt 0 ] && return $code
 
 	height=$("${magick_bin}" "${input}" -format "%h" info: 2>&1)
-	msg=$("${montage_bin}" "${input}" -resize x${height} "${img_to_add}" -geometry +0+0 "${dir}/${base}_${img_to_add_base}.${ext}" 2>&1)
+	msg=$("${magick_bin}" montage "${input}" -resize "x${height}" "${img_to_add}" -geometry +0+0 "${dir}/${base}_${img_to_add_base}.${ext}" 2>&1)
 	return $?
 }
 
