@@ -651,13 +651,13 @@ run_convert () {
 run_favicons () {
 	dest_dir="${base}-favicons"
 
-	wxh=$(convert "${input}" -format "%w x %h" info:)
+	wxh=$("${magick_bin}" "${input}" -format "%w x %h" info:)
 	w=${wxh%% *}
 	h=${wxh##* }
 	max=$(( w > h ? w : h ))
 
 	SOURCE_IMG="${base}_square.png"
-	convert "${input}" -background transparent \
+	"${magick_bin}" "${input}" -background transparent \
 		-compose Copy -gravity center -extent ${max}x${max} "${SOURCE_IMG}"
 
 	PLATFORMS=(ANDROID APPLE FAVICON MS)
