@@ -748,11 +748,11 @@ EOF
 }
 
 run_montage () {
-	msg=$(convert "${img_to_add}" -format "%h" info: 2>&1)
+	msg=$("${magick_bin}" "${img_to_add}" -format "%h" info: 2>&1)
 	code=$?
 	[ $code -gt 0 ] && return $code
 
-	height=$(convert "${input}" -format "%h" info: 2>&1)
+	height=$("${magick_bin}" "${input}" -format "%h" info: 2>&1)
 	msg=$("${montage_bin}" "${input}" -resize x${height} "${img_to_add}" -geometry +0+0 "${dir}/${base}_${img_to_add_base}.${ext}" 2>&1)
 	return $?
 }
