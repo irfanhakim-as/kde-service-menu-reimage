@@ -683,7 +683,7 @@ run_favicons () {
 
 		for i in ${SIZES[@]}; do
 			mkdir -p "${dest_dir}"
-			echo ${NAME}-${i}x${i}.png
+			echo "${NAME}-${i}x${i}.png"
 			"${magick_bin}" "${SOURCE_IMG}" -resize "${i}x${i}!" "${dest_dir}/${NAME}-${i}x${i}.png"
 		done
 	done
