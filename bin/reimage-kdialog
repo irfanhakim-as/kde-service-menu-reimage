@@ -1294,9 +1294,9 @@ magick_bin=$(which magick)
 # [ -z "${convert_bin}" ] && \
 # 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_convert_not_found_text}" && exit 2
 
-montage_bin=$(which montage)
-[ -z "${montage_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
+# montage_bin=$(which montage)
+# [ -z "${montage_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
 
 jhead_bin=$(which jhead)
 [ -z "${jhead_bin}" ] && \
