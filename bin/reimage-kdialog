@@ -567,7 +567,7 @@ run_compress () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -quality "${quality}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -quality "${quality}" "${input}" "${dir}/${base}_compressed.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -quality "${quality}" "${dir}/${base}_compressed.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -578,7 +578,7 @@ run_optimize () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" "${dir}/${base}_optimized.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${dir}/${base}_optimized.${ext}" 2>&1)
 	fi
 	return $?
 }
@@ -587,7 +587,7 @@ run_progressive () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -strip -interlace Plane "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -strip -interlace Plane "${input}" "${dir}/${base}_progressive.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -strip -interlace Plane "${dir}/${base}_progressive.${ext}" 2>&1)
 	fi
 	return $?
 }
@@ -596,7 +596,7 @@ run_resize () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -resize "${scale}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -resize "${scale}" "${input}" "${dir}/${base}_resized.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -resize "${scale}" "${dir}/${base}_resized.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -605,7 +605,7 @@ run_resize () {
 ######################################## Run convert and rotate
 
 run_agif () {
-	msg=$("${convert_bin}" -delay ${delay} "${@}" -loop ${loop} "${dir}/animated.gif" 2>&1)
+	msg=$("${magick_bin}" -delay "${delay}" "${@}" -loop "${loop}" "${dir}/animated.gif" 2>&1)
 	return $?
 }
 
@@ -624,7 +624,7 @@ run_border () {
 		output="${dir}/${base}_border.${ext}"
 	fi
 
-	msg=$("${convert_bin}" "${input}" -bordercolor "${color}" -border "${size}" "${output}" 2>&1)
+	msg=$("${magick_bin}" "${input}" -bordercolor "${color}" -border "${size}" "${output}" 2>&1)
 	return $?
 }
 
@@ -632,7 +632,7 @@ run_colorspace () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -colorspace "${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -colorspace "${value}" "${input}" "${dir}/${base}_colorspace.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -colorspace "${value}" "${dir}/${base}_colorspace.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -640,7 +640,7 @@ run_colorspace () {
 
 run_convert () {
 	if [ "${overwrite}" != true ] && [ "${ext}" = "${format}" ]; then
-		msg=$("${convert_bin}" -format "${format}" "${input}" "${dir}/${base}_converted.${format}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -format "${format}" "${dir}/${base}_converted.${format}" 2>&1)
 	else
 		msg=$("${mogrify_bin}" -format "${format}" "${input}" 2>&1)
 	fi
@@ -683,13 +683,13 @@ run_favicons () {
 		for i in ${SIZES[@]}; do
 			mkdir -p "${dest_dir}"
 			echo ${NAME}-${i}x${i}.png
-			"${convert_bin}" -resize "${i}x${i}!" "${SOURCE_IMG}" "${dest_dir}/${NAME}-${i}x${i}.png"
+			"${magick_bin}" "${SOURCE_IMG}" -resize "${i}x${i}!" "${dest_dir}/${NAME}-${i}x${i}.png"
 		done
 	done
 
-	"${convert_bin}" -resize 16x16 "${SOURCE_IMG}" "${dest_dir}/favicon.ico"
-	"${convert_bin}" -resize 192x192 "${SOURCE_IMG}" "${dest_dir}/apple-icon.png"
-	"${convert_bin}" -resize 192x192 "${SOURCE_IMG}" "${dest_dir}/apple-icon-precomposed.png"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 16x16 "${dest_dir}/favicon.ico"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 192x192 "${dest_dir}/apple-icon.png"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 192x192 "${dest_dir}/apple-icon-precomposed.png"
 
 	yes | rm "${SOURCE_IMG}"
 
@@ -763,7 +763,7 @@ run_overturn () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -"${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -"${value}" "${input}" "${dir}/${base}_${value}.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -"${value}" "${dir}/${base}_${value}.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -778,9 +778,9 @@ run_rotate () {
 		fi
 	else
 		if [ "${angle}" = "auto" ]; then
-			msg=$("${convert_bin}" -auto-orient "${input}" "${dir}/${base}_rotated.${ext}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -auto-orient "${dir}/${base}_rotated.${ext}" 2>&1)
 		else
-			msg=$("${convert_bin}" -rotate ${angle} "${input}" "${dir}/${base}_rotated.${ext}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -rotate "${angle}" "${dir}/${base}_rotated.${ext}" 2>&1)
 		fi
 	fi
 
@@ -791,7 +791,7 @@ run_sepia () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" -sepia-tone "${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -sepia-tone "${value}" "${input}" "${dir}/${base}_sepia.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -sepia-tone "${value}" "${dir}/${base}_sepia.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -802,9 +802,9 @@ run_shadow () {
 	[ -n "${jfif}" ] && "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --sorry "${msg_common_transparent_unsupported_text}" && return 0
 
 	if [ "${overwrite}" = true ]; then
-		msg=$("${convert_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${dir}/${base}_shadow.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${dir}/${base}_shadow.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -814,9 +814,9 @@ run_timestamp () {
 	timestamp=$(jhead -exifmap 01.jpg | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
 
 	if [ "${overwrite}" = true ]; then
-		msg=$("${convert_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${dir}/${base}_timestamp.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${dir}/${base}_timestamp.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -826,7 +826,7 @@ run_transparent2color () {
 	if [ "${overwrite}" = true ]; then
 		msg=$("${mogrify_bin}" "${input}" -background "${color}" -flatten "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" -background "${color}" -flatten "${dir}/${base}_background.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -background "${color}" -flatten "${dir}/${base}_background.${ext}" 2>&1)
 	fi
 
 	return $?
