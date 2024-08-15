@@ -565,7 +565,7 @@ YUV	CCIR 601 4:1:1 or 4:2:2
 
 run_compress () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -quality "${quality}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -quality "${quality}" "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -quality "${quality}" "${dir}/${base}_compressed.${ext}" 2>&1)
 	fi
@@ -585,7 +585,7 @@ run_optimize () {
 
 run_progressive () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -strip -interlace Plane "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -strip -interlace Plane "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -strip -interlace Plane "${dir}/${base}_progressive.${ext}" 2>&1)
 	fi
@@ -594,7 +594,7 @@ run_progressive () {
 
 run_resize () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -resize "${scale}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -resize "${scale}" "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -resize "${scale}" "${dir}/${base}_resized.${ext}" 2>&1)
 	fi
@@ -630,7 +630,7 @@ run_border () {
 
 run_colorspace () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -colorspace "${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -colorspace "${value}" "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -colorspace "${value}" "${dir}/${base}_colorspace.${ext}" 2>&1)
 	fi
@@ -642,7 +642,7 @@ run_convert () {
 	if [ "${overwrite}" != true ] && [ "${ext}" = "${format}" ]; then
 		msg=$("${magick_bin}" "${input}" -format "${format}" "${dir}/${base}_converted.${format}" 2>&1)
 	else
-		msg=$("${mogrify_bin}" -format "${format}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -format "${format}" "${base}.${format}" 2>&1)
 	fi
 
 	return $?
@@ -761,7 +761,7 @@ run_montage () {
 
 run_overturn () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -"${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -"${value}" "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -"${value}" "${dir}/${base}_${value}.${ext}" 2>&1)
 	fi
@@ -772,9 +772,9 @@ run_overturn () {
 run_rotate () {
 	if [ "${overwrite}" = true ]; then
 		if [ "${angle}" = "auto" ]; then
-			msg=$("${mogrify_bin}" -auto-orient "${input}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -auto-orient "${input}" 2>&1)
 		else
-			msg=$("${mogrify_bin}" -rotate ${angle} "${input}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -rotate "${angle}" "${input}" 2>&1)
 		fi
 	else
 		if [ "${angle}" = "auto" ]; then
@@ -789,7 +789,7 @@ run_rotate () {
 
 run_sepia () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -sepia-tone "${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -sepia-tone "${value}" "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -sepia-tone "${value}" "${dir}/${base}_sepia.${ext}" 2>&1)
 	fi
@@ -824,7 +824,7 @@ run_timestamp () {
 
 run_transparent2color () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" "${input}" -background "${color}" -flatten "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -background "${color}" -flatten "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -background "${color}" -flatten "${dir}/${base}_background.${ext}" 2>&1)
 	fi
