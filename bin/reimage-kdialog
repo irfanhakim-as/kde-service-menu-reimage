@@ -558,7 +558,7 @@ YCbCr	Raw Y, Cb, and Cr samples
 YCbCrA	Raw Y, Cb, Cr, and alpha samples
 YUV	CCIR 601 4:1:1 or 4:2:2
 "
-	kdialog --icon configure --title "${!msg_title}" --msgbox "${formats}"
+	"${kdialog_bin}" --icon configure --title "${!msg_title}" --msgbox "${formats}"
 }
 
 ######################################## Run compress and resize
@@ -967,7 +967,7 @@ manage_input_separately () {
 	[ "${ask_overwrite}" = true ] && do_you_want_to_overwrite
 
 	quantity=$#
-	dbus_ref=$(kdialog --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
+	dbus_ref=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
 	qdbus $dbus_ref showCancelButton true
 	processed=0
 
