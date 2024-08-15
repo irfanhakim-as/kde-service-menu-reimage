@@ -576,7 +576,8 @@ run_compress () {
 run_optimize () {
 	## https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
+		# msg=$("${magick_bin}" mogrify -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
 	else
 		msg=$("${magick_bin}" "${input}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${dir}/${base}_optimized.${ext}" 2>&1)
 	fi
