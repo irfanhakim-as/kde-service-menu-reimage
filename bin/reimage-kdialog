@@ -1289,9 +1289,9 @@ mogrify_bin=$(which mogrify)
 [ -z "${mogrify_bin}" ] && \
 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_mogrify_not_found_text}" && exit 2
 
-convert_bin=$(which convert)
-[ -z "${convert_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_convert_not_found_text}" && exit 2
+# convert_bin=$(which convert)
+# [ -z "${convert_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_convert_not_found_text}" && exit 2
 
 montage_bin=$(which montage)
 [ -z "${montage_bin}" ] && \
