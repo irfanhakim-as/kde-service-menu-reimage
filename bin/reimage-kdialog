@@ -961,6 +961,9 @@ manage_input_separately () {
 	[ ${#} -lt 1 ] && help
 	[ ${#} -gt 1 ] && multiple_files=true
 
+    # update messages with presently available vars
+    load_language
+
 	type run_${action} > /dev/null || \
 		{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_action_not_found_text}" && exit 2; }
 
