@@ -63,7 +63,7 @@ load_language_en_US () {
 
 	msg_convert_title="Convert file to \"${value}\" format"
 	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: mogrify -list format${new_line}or by consulting the ImageMagick manual."
-	msg_convert_finish_title="Convertion of \"${name}\""
+	msg_convert_finish_title="Conversion of \"${name}\""
 
 	msg_favicons_title="Favicons generation"
 	msg_favicons_finish_title="Generating favicons by \"${name}\""
