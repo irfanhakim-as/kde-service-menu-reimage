@@ -987,7 +987,7 @@ manage_input_separately () {
 		[ ! -f "${input}" ] && "${kdialog_bin}" --title --icon configure "${!msg_title}" --error "${msg_common_file_not_found}" && break
 		qdbus $dbus_ref setLabelText "${msg_common_progress_text}"
 
-		msg_finish_title=msg_${action}_finish_title
+		# msg_finish_title=msg_${action}_finish_title
 		run_${action} && \
 			"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 			{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1005,7 +1005,7 @@ manage_input_at_once () {
 	name="${1##*/}"
 	load_language
 
-	msg_finish_title=msg_${action}_finish_title
+	# msg_finish_title=msg_${action}_finish_title
 	run_${action} "${@}" && \
 		"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 		{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1311,6 +1311,7 @@ shift
 
 load_language
 msg_title=msg_${action}_title
+msg_finish_title=msg_${action}_finish_title
 
 type set_${action} &> /dev/null || \
 	{ "${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
