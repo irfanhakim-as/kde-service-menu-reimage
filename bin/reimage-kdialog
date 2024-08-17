@@ -1019,9 +1019,11 @@ manage_input_at_once () {
 
 set_compress () {
 	value="${1}"
+	quality="75%"
 	shift
 
-	quality="75%"
+	load_language
+
 	if [ "${value}" = "custom" ]; then
 		quality=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_compress_quality_input_text}" "${quality}") || \
 			{ "${kdialog_bin}" --title "${!msg_title}" --passivepopup "${msg_common_abort}" 5 && exit 2; }
@@ -1046,6 +1048,8 @@ set_progressive () {
 set_resize () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		scale=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_resize_scale_input_text}") || \
@@ -1116,6 +1120,8 @@ set_convert () {
 
 	[ "${value}" = "formats" ] && { formats; exit 0; }
 
+	load_language
+
 	if [ "${value}" = "custom" ]; then
 		format=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_convert_format_input_text}") || \
 			{ "${kdialog_bin}" --title "${!msg_title}" --passivepopup "${msg_common_abort}" 5 && exit 2; }
@@ -1164,6 +1170,8 @@ set_overturn () {
 set_rotate () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		angle=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_rotate_angle_input_text}") || \
