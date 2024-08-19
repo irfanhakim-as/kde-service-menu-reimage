@@ -17,7 +17,7 @@
 #
 
 [Desktop Entry]
-Actions=jpeg;png;gif;tiff;webp;_SEPARATOR_;pdf;pdfa;_SEPARATOR_;agif;favicons;base64;convert_custom;formats;_SEPARATOR_;rotate_90;rotate_180;rotate_270;rotate_custom;auto;_SEPARATOR_;flip;flop;_SEPARATOR_;
+Actions=jpeg;png;gif;tiff;webp;_SEPARATOR_;pdf;pdfa;_SEPARATOR_;favicons;base64;convert_custom;formats;_SEPARATOR_;rotate_90;rotate_180;rotate_270;rotate_custom;auto;_SEPARATOR_;flip;flop;_SEPARATOR_;
 MimeType=image/*
 Name=ReImage convert and rotate service menu
 ServiceTypes=KonqPopupMenu/Plugin,image/*
