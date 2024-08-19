@@ -26,12 +26,12 @@ new_line="
 
 load_language_en_US () {
 	msg_common_software_not_found_title="Software not found"
-	msg_common_magick_not_found_text="Software ImageMagick not found! Please, install it."
+	msg_common_magick_not_found_text="Software \"ImageMagick\" was not found! Please install it."
 	# msg_common_mogrify_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_convert_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_montage_not_found_text="Software ImageMagick not found! Please, install it."
-	msg_common_jhead_not_found_text="Software jhead not found! Please, install it."
-	msg_common_webp_not_found_text="Software webp not found! Please, install it."
+	msg_common_jhead_not_found_text="Software \"Jhead\" was not found! Please install it."
+	msg_common_webp_not_found_text="Software \"WebP\" was not found! Please install it."
 	msg_common_action_not_found_text="The requested action is not implemented."
 	msg_common_overwrite_text="In case the images to be saved have the same name as those to be processed,${new_line}do you want to overwrite them?"
 	msg_common_abort="Operation interrupted by the user."
@@ -63,7 +63,7 @@ load_language_en_US () {
 
 	msg_convert_title="Convert file to \"${value}\" format"
 	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: mogrify -list format${new_line}or by consulting the ImageMagick manual."
-	msg_convert_finish_title="Convertion of \"${name}\""
+	msg_convert_finish_title="Conversion of \"${name}\""
 
 	msg_favicons_title="Favicons generation"
 	msg_favicons_finish_title="Generating favicons by \"${name}\""
@@ -78,7 +78,7 @@ load_language_en_US () {
 	msg_overturn_finish_title="Overturn \"${name}\""
 
 	msg_resize_title="Resizing image \"${value}\""
-	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Valid values can be: 30% or 1024x768"
+	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for one or each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Example values: 30%, 1024x768, 1024x, x768"
 	msg_resize_finish_title="Resizing of \"${name}\""
 
 	msg_rotate_title="Rotate file with angle of \"${value}\""
@@ -145,12 +145,12 @@ load_language_en_US () {
 
 load_language_it () {
 	msg_common_software_not_found_title="Software non trovato"
-	msg_common_magick_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
+	msg_common_magick_not_found_text="Il software \"ImageMagick\" non è stato trovato! Per favore installalo."
 	# msg_common_mogrify_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_convert_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_montage_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
-	msg_common_jhead_not_found_text="Il software jhead non è stato trovato! Per favore, installalo."
-	msg_common_webp_not_found_text="Il software webp non è stato trovato! Per favore, installalo."
+	msg_common_jhead_not_found_text="Il software \"Jhead\" non è stato trovato! Per favore installalo."
+	msg_common_webp_not_found_text="Il software \"WebP\" non è stato trovato! Per favore installalo."
 	msg_common_action_not_found_text="L'azione richiesta non è implementata."
 	msg_common_overwrite_text="Nel caso che le immagini da salvare abbiano lo stesso nome di quelle da elaborare,${new_line}vuoi sovrascriverle?"
 	msg_common_abort="Operazione interrotta dall'utente."
@@ -197,7 +197,7 @@ load_language_it () {
 	msg_overturn_finish_title="Ribaltamento file \"${name}\""
 
 	msg_resize_title="Ridimensionamento immagine \"${value}\""
-	msg_resize_scale_input_text="Digitare il fattore di scala in percentuale o la dimensione massima che si desidera per ogni direzione.${new_line}È possibile scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori validi possono essere: 30% oppure 300x300"
+	msg_resize_scale_input_text="Digita il fattore di scala in percentuale o la dimensione massima desiderata per una o ciascuna direzione.${new_line}Puoi scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori di esempio: 30%, 1024x768, 1024x, x768"
 	msg_resize_finish_title="Ridimensionamento di \"${name}\""
 
 	msg_rotate_title="Rotazione file di \"${value}\" gradi"
@@ -961,6 +961,9 @@ manage_input_separately () {
 	[ ${#} -lt 1 ] && help
 	[ ${#} -gt 1 ] && multiple_files=true
 
+    # update messages with presently available vars
+    load_language
+
 	type run_${action} > /dev/null || \
 		{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_action_not_found_text}" && exit 2; }
 
@@ -987,7 +990,7 @@ manage_input_separately () {
 		[ ! -f "${input}" ] && "${kdialog_bin}" --title --icon configure "${!msg_title}" --error "${msg_common_file_not_found}" && break
 		qdbus $dbus_ref setLabelText "${msg_common_progress_text}"
 
-		msg_finish_title=msg_${action}_finish_title
+		# msg_finish_title=msg_${action}_finish_title
 		run_${action} && \
 			"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 			{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1005,7 +1008,7 @@ manage_input_at_once () {
 	name="${1##*/}"
 	load_language
 
-	msg_finish_title=msg_${action}_finish_title
+	# msg_finish_title=msg_${action}_finish_title
 	run_${action} "${@}" && \
 		"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 		{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1016,9 +1019,11 @@ manage_input_at_once () {
 
 set_compress () {
 	value="${1}"
+	quality="75%"
 	shift
 
-	quality="75%"
+	load_language
+
 	if [ "${value}" = "custom" ]; then
 		quality=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_compress_quality_input_text}" "${quality}") || \
 			{ "${kdialog_bin}" --title "${!msg_title}" --passivepopup "${msg_common_abort}" 5 && exit 2; }
@@ -1043,6 +1048,8 @@ set_progressive () {
 set_resize () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		scale=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_resize_scale_input_text}") || \
@@ -1113,6 +1120,8 @@ set_convert () {
 
 	[ "${value}" = "formats" ] && { formats; exit 0; }
 
+	load_language
+
 	if [ "${value}" = "custom" ]; then
 		format=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_convert_format_input_text}") || \
 			{ "${kdialog_bin}" --title "${!msg_title}" --passivepopup "${msg_common_abort}" 5 && exit 2; }
@@ -1161,6 +1170,8 @@ set_overturn () {
 set_rotate () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		angle=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_rotate_angle_input_text}") || \
@@ -1300,17 +1311,18 @@ magick_bin=$(which magick)
 
 jhead_bin=$(which jhead)
 [ -z "${jhead_bin}" ] && \
-	"${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_jhead_not_found_text}" && exit 2
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_jhead_not_found_text}" && exit 2
 
 webp_bin=$(which webpinfo)
 [ -z "${webp_bin}" ] && \
-	"${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_webp_not_found_text}" && exit 2
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
 
 action="${1}"
 shift
 
 load_language
 msg_title=msg_${action}_title
+msg_finish_title=msg_${action}_finish_title
 
 type set_${action} &> /dev/null || \
 	{ "${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }
