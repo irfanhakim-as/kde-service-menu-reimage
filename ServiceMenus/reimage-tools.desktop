@@ -17,7 +17,7 @@
 #
 
 [Desktop Entry]
-Actions=agif;append_right;_SEPARATOR_;gray;sepia;transparent2color;_SEPARATOR_;border;border_transparent;shadow;_SEPARATOR_;
+Actions=agif;append_right;_SEPARATOR_;gray;sepia;transparent2color;_SEPARATOR_;border;border_transparent;shadow;
 MimeType=image/*
 Name=ReImage tools service menu
 ServiceTypes=KonqPopupMenu/Plugin,image/*

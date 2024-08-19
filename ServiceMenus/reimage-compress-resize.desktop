@@ -17,7 +17,7 @@
 #
 
 [Desktop Entry]
-Actions=progressive;optimize;_SEPARATOR_;compress_50;compress_70;compress_75;compress_80;compress_90;custom_compress;_SEPARATOR_;resize_25;resize_50;resize_75;_SEPARATOR_;300x225;600x450;800x600;1024x768;1200x900;1400x1050;1920x1080;custom_resize;_SEPARATOR_;
+Actions=progressive;optimize;_SEPARATOR_;compress_50;compress_70;compress_75;compress_80;compress_90;custom_compress;_SEPARATOR_;resize_25;resize_50;resize_75;_SEPARATOR_;300x225;600x450;800x600;1024x768;1200x900;1400x1050;1920x1080;custom_resize;
 MimeType=image/*
 Name=ReImage compress and resize service menu
 ServiceTypes=KonqPopupMenu/Plugin,image/*
