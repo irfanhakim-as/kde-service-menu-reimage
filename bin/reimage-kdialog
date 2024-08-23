@@ -63,7 +63,7 @@ load_language_en_US () {
 	msg_compress_finish_title="Compression of \"${name}\""
 
 	msg_convert_title="Convert file to \"${value}\" format"
-	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: ${magick_bin} -list format${new_line}or by consulting the ImageMagick manual."
+	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: \`${magick_bin} -list format\`${new_line}or by consulting the ImageMagick manual."
 	msg_convert_finish_title="Conversion of \"${name}\""
 
 	msg_favicons_title="Favicons generation"
@@ -182,7 +182,7 @@ load_language_it () {
 	msg_compress_finish_title="Compressione di \"${name}\""
 
 	msg_convert_title="Conversione immagine nel formato \"${value}\""
-	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: ${magick_bin} -list format${new_line}oppure consultando il manuale di ImageMagick."
+	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: \`${magick_bin} -list format\`${new_line}oppure consultando il manuale di ImageMagick."
 	msg_convert_finish_title="Conversione di \"${name}\""
 
 	msg_favicons_title="Generazione favicons"
