@@ -28,8 +28,8 @@ jobs:
         echo "Current version: ${VERSION}"
         echo "version=${VERSION}" >> ${GITHUB_OUTPUT}
 
-    - name: Replace version in files
-      id: replace_version
+    - name: Update version in source code
+      id: update_version
       run: |
         # update version badge in markdown files
         find . -type f -name "*.md" -exec sed -i "s/\(Version-\)[0-9]*\.[0-9]*\.[0-9]*\(-informational\)/\1${{ steps.get_version.outputs.version }}\2/g;s/\[Version: [0-9]*\.[0-9]*\.[0-9]*\]/\[Version: ${{ steps.get_version.outputs.version }}\]/g" {} +
