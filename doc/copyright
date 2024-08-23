@@ -4,10 +4,12 @@ Upstream-Name: kde-service-menu-reimage
 Files: *
 Copyright: 2018 Giuseppe Benigno <giuseppe.benigno@gmail.com>
            2019 Giuseppe Benigno <giuseppe.benigno@gmail.com>
+           2024 Irfan Hakim <irfanhakim.as@yahoo.com>
 License: GPL-3.0+
 
 Files: debian/*
 Copyright: 2018 Giuseppe Benigno <giuseppe.benigno@gmail.com>
+           2024 Irfan Hakim <irfanhakim.as@yahoo.com>
 License: GPL-3.0+
 
 License: GPL-3.0+
