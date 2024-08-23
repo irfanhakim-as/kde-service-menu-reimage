@@ -60,23 +60,6 @@ jobs:
         # update version in service menu .desktop files
         find ./ServiceMenus -type f -name "*.desktop" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_version.outputs.version }})/g" {} +
 
-    - name: Check if release exists
-      id: check_release
-      run: |
-        # check if release of current version exists
-        if [[ "$(gh release view "v${{ steps.get_version.outputs.version }}" 2>&1)" == "release not found" ]]; then
-          echo "Release v${{ steps.get_version.outputs.version }} has not been created."
-          exists=false
-        else
-          echo "Release v${{ steps.get_version.outputs.version }} already exists."
-          exists=true
-        fi
-
-        # export result to output
-        echo "exists=${exists}" >> ${GITHUB_OUTPUT}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Check if files have changes
       id: check_changes
       run: |
@@ -108,6 +91,23 @@ jobs:
 
         # push changes to current remote branch
         git push -u origin HEAD
+
+    - name: Check if release exists
+      id: check_release
+      run: |
+        # check if release of current version exists
+        if [[ "$(gh release view "v${{ steps.get_version.outputs.version }}" 2>&1)" == "release not found" ]]; then
+          echo "Release v${{ steps.get_version.outputs.version }} has not been created."
+          exists=false
+        else
+          echo "Release v${{ steps.get_version.outputs.version }} already exists."
+          exists=true
+        fi
+
+        # export result to output
+        echo "exists=${exists}" >> ${GITHUB_OUTPUT}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Get previous release tag
       id: get_prev_tag
