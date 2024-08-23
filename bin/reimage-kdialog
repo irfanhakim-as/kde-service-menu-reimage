@@ -1125,9 +1125,9 @@ set_convert () {
 	value="${1}"
 	shift
 
-	[ "${value}" = "formats" ] && { formats; exit 0; }
-
 	load_language
+
+	[ "${value}" = "formats" ] && { formats; exit 0; }
 
 	if [ "${value}" = "custom" ]; then
 		format=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_convert_format_input_text}") || \
