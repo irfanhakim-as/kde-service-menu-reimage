@@ -1,0 +1,124 @@
+name: Update Version and Create Release
+
+on:
+  push:
+    branches:
+      - master         # monitor changes only in the master branch
+    paths:
+      - metadata.sh    # monitor changes to the metadata.sh file
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code
+      id: checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Source metadata.sh and export variables
+      id: get_version
+      run: |
+        source metadata.sh
+        echo "VERSION=${VERSION}"
+        echo "version=${VERSION}" >> ${GITHUB_OUTPUT}
+
+    - name: Replace version in files
+      id: replace_version
+      run: |
+        # update version badge in markdown files
+        find . -type f -name "*.md" -exec sed -i "s/\(Version-\)[0-9]*\.[0-9]*\.[0-9]*\(-informational\)/\1${{ steps.get_version.outputs.version }}\2/g;s/\[Version: [0-9]*\.[0-9]*\.[0-9]*\]/\[Version: ${{ steps.get_version.outputs.version }}\]/g" {} +
+
+        # update version in shell files
+        find . -type f -name "*.sh" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_version.outputs.version }})/g" {} +
+
+        # update version in binary files
+        find ./bin -type f -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_version.outputs.version }})/g" {} +
+
+        # update version in config files
+        find ./doc -type f -name "*.config" -exec sed -i "s/version=.*/version=${{ steps.get_version.outputs.version }}/g" {} +
+
+        # update version in service menu .desktop files
+        find ./ServiceMenus -type f -name "*.desktop" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_version.outputs.version }})/g" {} +
+
+    - name: Check if release exists
+      id: check_release
+      run: |
+        if [[ "$(gh release view "v${{ steps.get_version.outputs.version }}" 2>&1)" == "release not found" ]]; then
+          echo "Release v${{ steps.get_version.outputs.version }} has not been created."
+          exists=false
+        else
+          echo "Release v${{ steps.get_version.outputs.version }} already exists."
+          exists=true
+        fi
+        echo "exists=${exists}" >> ${GITHUB_OUTPUT}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check if files have changes
+      id: check_changes
+      run: |
+        git add .
+        if git diff --cached --exit-code >/dev/null; then
+          echo "Changes have not been made."
+          exists=false
+        else
+          echo "Changes have been made that are pending commit."
+          exists=true
+        fi
+        echo "exists=${exists}" >> ${GITHUB_OUTPUT}
+
+    - name: Commit updated files
+      id: commit_changes
+      if: steps.check_changes.outputs.exists == 'true'
+      run: |
+        git config --local user.name "github-actions[bot]"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Bump version to ${{ steps.get_version.outputs.version }}"
+        git push -u origin HEAD
+
+    - name: Get previous release tag
+      id: get_prev_tag
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        prev_tag=$(git describe --tags --abbrev=0 HEAD^ || echo "")
+        if [ -z "$prev_tag" ]; then
+          echo "No previous tag found, this might be the first release."
+          prev_tag="HEAD" # use HEAD to include all commits
+        else
+          echo "Previous version: ${prev_tag}"
+        fi
+        echo "prev_tag=${prev_tag}" >> ${GITHUB_OUTPUT}
+
+    - name: Get commit messages since last release
+      id: get_commits
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        commits="$(git log ${{ steps.get_prev_tag.outputs.prev_tag }}..HEAD --oneline | base64 -w 0)"
+        echo "Latest commits: ${commits}"
+        echo "commits=${commits}" >> ${GITHUB_OUTPUT}
+
+    - name: Create GitHub Release
+      if: steps.check_release.outputs.exists == 'false'
+      id: create_release
+      run: |
+        # determine main branch
+        main_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+        # decode the commit messages
+        decoded_commits=$(echo "${{ steps.get_commits.outputs.commits }}" | base64 --decode)
+        # prepare notes
+        release_notes="Release v${{ steps.get_version.outputs.version }}.\n\n**Changes**:\n\n${decoded_commits}"
+
+        # create release
+        gh release create "v${{ steps.get_version.outputs.version }}" \
+          --title "v${{ steps.get_version.outputs.version }}" \
+          --notes "$(echo -e "${release_notes}")" \
+          --target "${main_branch}" \
+          --generate-notes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
