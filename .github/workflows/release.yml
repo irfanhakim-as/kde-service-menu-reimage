@@ -24,9 +24,23 @@ jobs:
     - name: Source metadata file and export variables
       id: get_version
       run: |
-        source metadata.sh
-        echo "Current version: ${VERSION}"
-        echo "version=${VERSION}" >> ${GITHUB_OUTPUT}
+        # set metadata file name
+        metadata_file="metadata.sh"
+        # set version variable
+        version_var="VERSION"
+
+        # source values from metadata file
+        source "${metadata_file}"
+
+        # ensure version is set
+        if [ -z "${!version_var}" ]; then
+          echo "Error: \${${version_var}} is not set in the ${metadata_file} file" >&2
+          exit 1
+        fi
+
+        # export result to output
+        echo "Current version: ${!version_var}"
+        echo "version=${!version_var}" >> ${GITHUB_OUTPUT}
 
     - name: Update version in source code
       id: update_version
