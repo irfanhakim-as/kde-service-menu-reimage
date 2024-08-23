@@ -49,13 +49,13 @@ done
 echo "Installing kde-service-menu-reimage (${install_mode}) ..."
 
 # install required binaries
-install -d "${bin_dir}"
-install -m 755 -p bin/* "${bin_dir}"
+install -d "${bin_dir}" && \
+install -m 755 -p bin/* "${bin_dir}" && \
 # install required service menus
-install -d "${servicemenu_dir}"
-install -m 755 -p ServiceMenus/*.desktop "${servicemenu_dir}"
+install -d "${servicemenu_dir}" && \
+install -m 755 -p ServiceMenus/*.desktop "${servicemenu_dir}" && \
 # install documentation files
-install -d "${doc_dir}"
+install -d "${doc_dir}" && \
 install -m 644 -p doc/* "${doc_dir}"
 
 echo "SUCCESS: kde-service-menu-reimage has been installed successfully."
