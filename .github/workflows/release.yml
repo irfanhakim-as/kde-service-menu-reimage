@@ -25,7 +25,7 @@ jobs:
       id: get_version
       run: |
         source metadata.sh
-        echo "VERSION=${VERSION}"
+        echo "Current version: ${VERSION}"
         echo "version=${VERSION}" >> ${GITHUB_OUTPUT}
 
     - name: Replace version in files
