@@ -3,9 +3,9 @@ name: Update Version and Create Release
 on:
   push:
     branches:
-      - master         # monitor changes only in the master branch
+      - master                    # monitor changes only in the master branch
     paths:
-      - metadata.sh    # monitor changes to the metadata.sh file
+      - doc/package.conf          # monitor changes to the package metadata file
 
 permissions:
   contents: write
