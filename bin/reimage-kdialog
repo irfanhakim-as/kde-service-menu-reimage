@@ -63,7 +63,7 @@ load_language_en_US () {
 	msg_compress_finish_title="Compression of \"${name}\""
 
 	msg_convert_title="Convert file to \"${value}\" format"
-	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: mogrify -list format${new_line}or by consulting the ImageMagick manual."
+	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: \`${magick_bin} -list format\`${new_line}or by consulting the ImageMagick manual."
 	msg_convert_finish_title="Conversion of \"${name}\""
 
 	msg_favicons_title="Favicons generation"
@@ -77,6 +77,9 @@ load_language_en_US () {
 
 	msg_overturn_title="Overturn file to \"${value}\""
 	msg_overturn_finish_title="Overturn \"${name}\""
+
+	msg_progressive_title="Make file progressive"
+	msg_progressive_finish_title="Make \"${name}\" progressive"
 
 	msg_resize_title="Resizing image \"${value}\""
 	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for one or each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Example values: 30%, 1024x768, 1024x, x768"
@@ -182,7 +185,7 @@ load_language_it () {
 	msg_compress_finish_title="Compressione di \"${name}\""
 
 	msg_convert_title="Conversione immagine nel formato \"${value}\""
-	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: mogrify -list format${new_line}oppure consultando il manuale di ImageMagick."
+	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: \`${magick_bin} -list format\`${new_line}oppure consultando il manuale di ImageMagick."
 	msg_convert_finish_title="Conversione di \"${name}\""
 
 	msg_favicons_title="Generazione favicons"
@@ -196,6 +199,9 @@ load_language_it () {
 
 	msg_overturn_title="Ribalta \"${value}\""
 	msg_overturn_finish_title="Ribaltamento file \"${name}\""
+
+	msg_progressive_title="Rendi il file progressivo"
+	msg_progressive_finish_title="Rendi \"${name}\" progressivo"
 
 	msg_resize_title="Ridimensionamento immagine \"${value}\""
 	msg_resize_scale_input_text="Digita il fattore di scala in percentuale o la dimensione massima desiderata per una o ciascuna direzione.${new_line}Puoi scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori di esempio: 30%, 1024x768, 1024x, x768"
@@ -1119,9 +1125,9 @@ set_convert () {
 	value="${1}"
 	shift
 
-	[ "${value}" = "formats" ] && { formats; exit 0; }
-
 	load_language
+
+	[ "${value}" = "formats" ] && { formats; exit 0; }
 
 	if [ "${value}" = "custom" ]; then
 		format=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_convert_format_input_text}") || \

@@ -50,12 +50,18 @@ done
 echo "Uninstalling kde-service-menu-reimage (${install_mode}) ..."
 
 # remove required binaries
-echo "Removing ${bin_dir}/reimage-kdialog"; rm "${bin_dir}/reimage-kdialog"
+echo "Removing ${bin_dir}/reimage-kdialog" && rm -f "${bin_dir}/reimage-kdialog" && \
 # remove required service menus
 for file in "${servicemenu_files[@]}"; do
-    echo "Removing ${servicemenu_dir}/${file}"; rm "${servicemenu_dir}/${file}"
-done
+    echo "Removing ${servicemenu_dir}/${file}" && rm -f "${servicemenu_dir}/${file}"
+done && \
 # remove documentation files
-echo "Removing ${doc_dir}"; rm -rf "${doc_dir}"
+echo "Removing ${doc_dir}" && rm -rf "${doc_dir}"
 
-echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
+# report uninstallation result
+if [ ${?} -eq 0 ]; then
+    echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
+else
+    echo "ERROR: kde-service-menu-reimage uninstallation failed."
+    exit 1
+fi
