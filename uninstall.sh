@@ -58,4 +58,10 @@ done && \
 # remove documentation files
 echo "Removing ${doc_dir}" && rm -rf "${doc_dir}"
 
-echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
+# report uninstallation result
+if [ ${?} -eq 0 ]; then
+    echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
+else
+    echo "ERROR: kde-service-menu-reimage uninstallation failed."
+    exit 1
+fi
