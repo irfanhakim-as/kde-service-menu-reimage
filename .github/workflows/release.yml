@@ -21,7 +21,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Source metadata.sh and export variables
+    - name: Source metadata file and export variables
       id: get_version
       run: |
         source metadata.sh
