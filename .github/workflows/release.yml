@@ -156,3 +156,19 @@ jobs:
           --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Package assets into archive
+      id: package_asset
+      if: steps.check_release.outputs.exists == 'false'
+      run: |
+        # set package values
+        name="kde-service-menu-reimage"
+        version="${{ steps.get_version.outputs.version }}"
+        arch="all"
+        asset="${name}_${version}_${arch}.tar.gz"
+
+        # package required assets into a tar.gz file
+        tar -czvf "${asset}" bin doc ServiceMenus *.sh README.md
+
+        # export asset path
+        echo "asset=${asset}" >> ${GITHUB_OUTPUT}
