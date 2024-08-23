@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# 	Part of kde-service-menu-reimage Version 2.5
+# 	Part of kde-service-menu-reimage (version 2.5)
 # 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
 # 	Copyright (C) 2024 Irfan Hakim <irfanhakim.as(at)yahoo.com>
 #
