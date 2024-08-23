@@ -78,6 +78,9 @@ load_language_en_US () {
 	msg_overturn_title="Overturn file to \"${value}\""
 	msg_overturn_finish_title="Overturn \"${name}\""
 
+	msg_progressive_title="Make file progressive"
+	msg_progressive_finish_title="Make \"${name}\" progressive"
+
 	msg_resize_title="Resizing image \"${value}\""
 	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for one or each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Example values: 30%, 1024x768, 1024x, x768"
 	msg_resize_finish_title="Resizing of \"${name}\""
@@ -196,6 +199,9 @@ load_language_it () {
 
 	msg_overturn_title="Ribalta \"${value}\""
 	msg_overturn_finish_title="Ribaltamento file \"${name}\""
+
+	msg_progressive_title="Rendi il file progressivo"
+	msg_progressive_finish_title="Rendi \"${name}\" progressivo"
 
 	msg_resize_title="Ridimensionamento immagine \"${value}\""
 	msg_resize_scale_input_text="Digita il fattore di scala in percentuale o la dimensione massima desiderata per una o ciascuna direzione.${new_line}Puoi scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori di esempio: 30%, 1024x768, 1024x, x768"
