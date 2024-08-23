@@ -63,6 +63,7 @@ jobs:
     - name: Check if release exists
       id: check_release
       run: |
+        # check if release of current version exists
         if [[ "$(gh release view "v${{ steps.get_version.outputs.version }}" 2>&1)" == "release not found" ]]; then
           echo "Release v${{ steps.get_version.outputs.version }} has not been created."
           exists=false
@@ -70,6 +71,8 @@ jobs:
           echo "Release v${{ steps.get_version.outputs.version }} already exists."
           exists=true
         fi
+
+        # export result to output
         echo "exists=${exists}" >> ${GITHUB_OUTPUT}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +80,10 @@ jobs:
     - name: Check if files have changes
       id: check_changes
       run: |
+        # add local files
         git add .
+
+        # determine if changes were made
         if git diff --cached --exit-code >/dev/null; then
           echo "Changes have not been made."
           exists=false
@@ -85,35 +91,49 @@ jobs:
           echo "Changes have been made that are pending commit."
           exists=true
         fi
+
+        # export result to output
         echo "exists=${exists}" >> ${GITHUB_OUTPUT}
 
     - name: Commit updated files
       id: commit_changes
       if: steps.check_changes.outputs.exists == 'true'
       run: |
+        # configure git user
         git config --local user.name "github-actions[bot]"
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+        # commit changes
         git commit -m "Bump version to ${{ steps.get_version.outputs.version }}"
+
+        # push changes to current remote branch
         git push -u origin HEAD
 
     - name: Get previous release tag
       id: get_prev_tag
       if: steps.check_release.outputs.exists == 'false'
       run: |
+        # determine previous tag
         prev_tag=$(git describe --tags --abbrev=0 HEAD^ || echo "")
-        if [ -z "$prev_tag" ]; then
+
+        # check if previous tag exists
+        if [ -z "${prev_tag}" ]; then
           echo "No previous tag found, this might be the first release."
           prev_tag="HEAD" # use HEAD to include all commits
-        else
-          echo "Previous version: ${prev_tag}"
         fi
+
+        # export result to output
+        echo "Previous version: ${prev_tag}"
         echo "prev_tag=${prev_tag}" >> ${GITHUB_OUTPUT}
 
     - name: Get commit messages since last release
       id: get_commits
       if: steps.check_release.outputs.exists == 'false'
       run: |
+        # get commits between versions
         commits="$(git log ${{ steps.get_prev_tag.outputs.prev_tag }}..HEAD --oneline | base64 -w 0)"
+
+        # export result to output
         echo "Latest commits: ${commits}"
         echo "commits=${commits}" >> ${GITHUB_OUTPUT}
 
@@ -125,7 +145,7 @@ jobs:
         main_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
         # decode the commit messages
         decoded_commits=$(echo "${{ steps.get_commits.outputs.commits }}" | base64 --decode)
-        # prepare notes
+        # prepare release notes
         release_notes="Release v${{ steps.get_version.outputs.version }}.\n\n**Changes**:\n\n${decoded_commits}"
 
         # create release
