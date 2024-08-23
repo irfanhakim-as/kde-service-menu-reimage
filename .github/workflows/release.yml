@@ -27,23 +27,22 @@ jobs:
     - name: Source metadata file and export variables
       id: get_version
       run: |
-        # set metadata file name
-        metadata_file="metadata.sh"
-        # set version variable
-        version_var="VERSION"
+        # set required variables
+        required_vars=("namespace" "version" "arch")
 
         # source values from metadata file
-        source "${metadata_file}"
+        source "${METADATA_FILE}"
 
-        # ensure version is set
-        if [ -z "${!version_var}" ]; then
-          echo "Error: \${${version_var}} is not set in the ${metadata_file} file" >&2
-          exit 1
-        fi
-
-        # export result to output
-        echo "Current version: ${!version_var}"
-        echo "version=${!version_var}" >> ${GITHUB_OUTPUT}
+        for var in "${required_vars[@]}"; do
+          # ensure variable is set
+          key="__${var}__"
+          if [ -z "${!key}" ]; then
+            echo "ERROR: Required variable \"${key}\" was not set successfully."
+            exit 1
+          fi
+          # export variable to output
+          echo "${var}=${!key}" | tee -a ${GITHUB_OUTPUT}
+        done
 
     - name: Update version in source code
       id: update_version
