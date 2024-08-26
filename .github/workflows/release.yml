@@ -155,7 +155,7 @@ jobs:
         # export asset path
         echo "asset=${asset}" >> ${GITHUB_OUTPUT}
 
-    - name: Create GitHub Release
+    - name: Create GitHub release
       id: create_release
       if: steps.package_asset.conclusion == 'success'
       run: |
