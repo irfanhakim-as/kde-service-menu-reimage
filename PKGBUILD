@@ -1,6 +1,6 @@
 # Maintainer: Irfan Hakim <irfanhakim.as@yahoo.com>
 pkgname='kf6-service-menu-reimage'
-pkgver=VERSION
+pkgver=2.6.0
 pkgrel=1
 pkgdesc="Manipulate images e their metadata"
 arch=('any')
@@ -13,12 +13,6 @@ conflicts=('kde-service-menu-reimage' 'kde-service-menu-reimage-mod')
 replaces=()
 source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_any.tar.gz")
 md5sums=('SKIP')
-
-pkgver() {
-    cd "kde-service-menu-reimage_${pkgver}_any"
-    source ./doc/package.conf
-    echo "${__version__}"
-}
 
 package() {
     cd "kde-service-menu-reimage_${pkgver}_any"
