@@ -132,8 +132,15 @@ jobs:
       id: get_commits
       if: steps.check_release.outputs.exists == 'false'
       run: |
+        # get previous version
+        prev_version="${{ steps.get_prev_tag.outputs.prev_tag }}"
+
         # get commits between versions
-        commits="$(git log ${{ steps.get_prev_tag.outputs.prev_tag }}..HEAD --oneline | base64 -w 0)"
+        if [[ "${prev_version}" == "HEAD" ]]; then
+          commits="$(git log --oneline | base64 -w 0)"
+        else
+          commits="$(git log "${prev_version}"..HEAD --oneline | base64 -w 0)"
+        fi
 
         # export result to output
         echo "Latest commits: ${commits}"
