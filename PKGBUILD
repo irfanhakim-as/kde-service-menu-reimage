@@ -21,8 +21,7 @@ pkgver() {
 }
 
 package() {
-	cd "kde-service-menu-reimage_${pkgver}_any"
-
+    cd "kde-service-menu-reimage_${pkgver}_any"
     # determine installation paths
     bin_dir="$(qtpaths --install-prefix)/bin"
     servicemenu_dir="$(qtpaths --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
