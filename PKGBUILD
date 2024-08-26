@@ -15,18 +15,17 @@ source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_
 md5sums=('SKIP')
 
 package() {
-    cd "kde-service-menu-reimage_${pkgver}_any"
     # determine installation paths
     bin_dir="$(qtpaths --install-prefix)/bin"
     servicemenu_dir="$(qtpaths --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
     doc_dir="$(qtpaths --install-prefix)/share/doc/kde-service-menu-reimage/"
     # install required binaries
-    install -d "${bin_dir}" && \
-    install -m 755 -p bin/* "${bin_dir}" && \
+    install -d "${pkgdir}${bin_dir}" && \
+    install -m 755 -p "${srcdir}"/bin/* "${pkgdir}${bin_dir}" && \
     # install required service menus
-    install -d "${servicemenu_dir}" && \
-    install -m 755 -p ServiceMenus/*.desktop "${servicemenu_dir}" && \
+    install -d "${pkgdir}${servicemenu_dir}" && \
+    install -m 755 -p "${srcdir}"/ServiceMenus/*.desktop "${pkgdir}${servicemenu_dir}" && \
     # install documentation files
-    install -d "${doc_dir}" && \
-    install -m 644 -p doc/* "${doc_dir}"
+    install -d "${pkgdir}${doc_dir}" && \
+    install -m 644 -p "${srcdir}"/doc/* "${pkgdir}${doc_dir}"
 }
