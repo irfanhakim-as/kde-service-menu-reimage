@@ -1,7 +1,8 @@
 #! /bin/bash
 #
-# 	Part of kde-service-menu-reimage Version 2.5
+# 	Part of kde-service-menu-reimage (version 2.5)
 # 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# 	Copyright (C) 2024 Irfan Hakim <irfanhakim.as(at)yahoo.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
 # 	it under the terms of the GNU General Public License as published by
@@ -26,11 +27,12 @@ new_line="
 
 load_language_en_US () {
 	msg_common_software_not_found_title="Software not found"
-	msg_common_mogrify_not_found_text="Software ImageMagick not found! Please, install it."
-	msg_common_convert_not_found_text="Software ImageMagick not found! Please, install it."
-	msg_common_montage_not_found_text="Software ImageMagick not found! Please, install it."
-	msg_common_jhead_not_found_text="Software jhead not found! Please, install it."
-	msg_common_webp_not_found_text="Software webp not found! Please, install it."
+	msg_common_magick_not_found_text="Software \"ImageMagick\" was not found! Please install it."
+	# msg_common_mogrify_not_found_text="Software ImageMagick not found! Please, install it."
+	# msg_common_convert_not_found_text="Software ImageMagick not found! Please, install it."
+	# msg_common_montage_not_found_text="Software ImageMagick not found! Please, install it."
+	msg_common_jhead_not_found_text="Software \"Jhead\" was not found! Please install it."
+	msg_common_webp_not_found_text="Software \"WebP\" was not found! Please install it."
 	msg_common_action_not_found_text="The requested action is not implemented."
 	msg_common_overwrite_text="In case the images to be saved have the same name as those to be processed,${new_line}do you want to overwrite them?"
 	msg_common_abort="Operation interrupted by the user."
@@ -61,8 +63,8 @@ load_language_en_US () {
 	msg_compress_finish_title="Compression of \"${name}\""
 
 	msg_convert_title="Convert file to \"${value}\" format"
-	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: mogrify -list format${new_line}or by consulting the ImageMagick manual."
-	msg_convert_finish_title="Convertion of \"${name}\""
+	msg_convert_format_input_text="Type the format you want.${new_line}A complete list can be obtained from the shell with: \`${magick_bin} -list format\`${new_line}or by consulting the ImageMagick manual."
+	msg_convert_finish_title="Conversion of \"${name}\""
 
 	msg_favicons_title="Favicons generation"
 	msg_favicons_finish_title="Generating favicons by \"${name}\""
@@ -76,8 +78,11 @@ load_language_en_US () {
 	msg_overturn_title="Overturn file to \"${value}\""
 	msg_overturn_finish_title="Overturn \"${name}\""
 
+	msg_progressive_title="Make file progressive"
+	msg_progressive_finish_title="Make \"${name}\" progressive"
+
 	msg_resize_title="Resizing image \"${value}\""
-	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Valid values can be: 30% or 1024x768"
+	msg_resize_scale_input_text="Type the scale factor in percentage or the maximum size you want for one or each direction.${new_line}You can choose a percentage or a pixel size.${new_line}${new_line}Example values: 30%, 1024x768, 1024x, x768"
 	msg_resize_finish_title="Resizing of \"${name}\""
 
 	msg_rotate_title="Rotate file with angle of \"${value}\""
@@ -144,11 +149,12 @@ load_language_en_US () {
 
 load_language_it () {
 	msg_common_software_not_found_title="Software non trovato"
-	msg_common_mogrify_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
-	msg_common_convert_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
-	msg_common_montage_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
-	msg_common_jhead_not_found_text="Il software jhead non è stato trovato! Per favore, installalo."
-	msg_common_webp_not_found_text="Il software webp non è stato trovato! Per favore, installalo."
+	msg_common_magick_not_found_text="Il software \"ImageMagick\" non è stato trovato! Per favore installalo."
+	# msg_common_mogrify_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
+	# msg_common_convert_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
+	# msg_common_montage_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
+	msg_common_jhead_not_found_text="Il software \"Jhead\" non è stato trovato! Per favore installalo."
+	msg_common_webp_not_found_text="Il software \"WebP\" non è stato trovato! Per favore installalo."
 	msg_common_action_not_found_text="L'azione richiesta non è implementata."
 	msg_common_overwrite_text="Nel caso che le immagini da salvare abbiano lo stesso nome di quelle da elaborare,${new_line}vuoi sovrascriverle?"
 	msg_common_abort="Operazione interrotta dall'utente."
@@ -179,7 +185,7 @@ load_language_it () {
 	msg_compress_finish_title="Compressione di \"${name}\""
 
 	msg_convert_title="Conversione immagine nel formato \"${value}\""
-	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: mogrify -list format${new_line}oppure consultando il manuale di ImageMagick."
+	msg_convert_format_input_text="Digitare il formato che si desidera.${new_line}Una lista completa può essere ottenuta da shell con: \`${magick_bin} -list format\`${new_line}oppure consultando il manuale di ImageMagick."
 	msg_convert_finish_title="Conversione di \"${name}\""
 
 	msg_favicons_title="Generazione favicons"
@@ -194,8 +200,11 @@ load_language_it () {
 	msg_overturn_title="Ribalta \"${value}\""
 	msg_overturn_finish_title="Ribaltamento file \"${name}\""
 
+	msg_progressive_title="Rendi il file progressivo"
+	msg_progressive_finish_title="Rendi \"${name}\" progressivo"
+
 	msg_resize_title="Ridimensionamento immagine \"${value}\""
-	msg_resize_scale_input_text="Digitare il fattore di scala in percentuale o la dimensione massima che si desidera per ogni direzione.${new_line}È possibile scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori validi possono essere: 30% oppure 300x300"
+	msg_resize_scale_input_text="Digita il fattore di scala in percentuale o la dimensione massima desiderata per una o ciascuna direzione.${new_line}Puoi scegliere una percentuale o una dimensione in pixel.${new_line}${new_line}Valori di esempio: 30%, 1024x768, 1024x, x768"
 	msg_resize_finish_title="Ridimensionamento di \"${name}\""
 
 	msg_rotate_title="Rotazione file di \"${value}\" gradi"
@@ -556,16 +565,16 @@ YCbCr	Raw Y, Cb, and Cr samples
 YCbCrA	Raw Y, Cb, Cr, and alpha samples
 YUV	CCIR 601 4:1:1 or 4:2:2
 "
-	kdialog --icon configure --title "${!msg_title}" --msgbox "${formats}"
+	"${kdialog_bin}" --icon configure --title "${!msg_title}" --msgbox "${formats}"
 }
 
 ######################################## Run compress and resize
 
 run_compress () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -quality "${quality}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -quality "${quality}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -quality "${quality}" "${input}" "${dir}/${base}_compressed.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -quality "${quality}" "${dir}/${base}_compressed.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -574,27 +583,28 @@ run_compress () {
 run_optimize () {
 	## https://www.smashingmagazine.com/2015/06/efficient-image-resizing-with-imagemagick/
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
+		# msg=$("${magick_bin}" mogrify -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${input}" "${dir}/${base}_optimized.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -filter Triangle -define filter:support=2 -unsharp 0.25x0.25+8+0.065 -dither None -posterize 136 -quality 82 -define jpeg:fancy-upsampling=off -define png:compression-filter=5 -define png:compression-level=9 -define png:compression-strategy=1 -define png:exclude-chunk=all -colorspace sRGB -strip -interlace Plane "${dir}/${base}_optimized.${ext}" 2>&1)
 	fi
 	return $?
 }
 
 run_progressive () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -strip -interlace Plane "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -strip -interlace Plane "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -strip -interlace Plane "${input}" "${dir}/${base}_progressive.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -strip -interlace Plane "${dir}/${base}_progressive.${ext}" 2>&1)
 	fi
 	return $?
 }
 
 run_resize () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -resize "${scale}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -resize "${scale}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -resize "${scale}" "${input}" "${dir}/${base}_resized.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -resize "${scale}" "${dir}/${base}_resized.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -603,7 +613,7 @@ run_resize () {
 ######################################## Run convert and rotate
 
 run_agif () {
-	msg=$("${convert_bin}" -delay ${delay} "${@}" -loop ${loop} "${dir}/animated.gif" 2>&1)
+	msg=$("${magick_bin}" -delay "${delay}" "${@}" -loop "${loop}" "${dir}/animated.gif" 2>&1)
 	return $?
 }
 
@@ -622,15 +632,15 @@ run_border () {
 		output="${dir}/${base}_border.${ext}"
 	fi
 
-	msg=$("${convert_bin}" "${input}" -bordercolor "${color}" -border "${size}" "${output}" 2>&1)
+	msg=$("${magick_bin}" "${input}" -bordercolor "${color}" -border "${size}" "${output}" 2>&1)
 	return $?
 }
 
 run_colorspace () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -colorspace "${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -colorspace "${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -colorspace "${value}" "${input}" "${dir}/${base}_colorspace.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -colorspace "${value}" "${dir}/${base}_colorspace.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -638,9 +648,9 @@ run_colorspace () {
 
 run_convert () {
 	if [ "${overwrite}" != true ] && [ "${ext}" = "${format}" ]; then
-		msg=$("${convert_bin}" -format "${format}" "${input}" "${dir}/${base}_converted.${format}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -format "${format}" "${dir}/${base}_converted.${format}" 2>&1)
 	else
-		msg=$("${mogrify_bin}" -format "${format}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -format "${format}" "${base}.${format}" 2>&1)
 	fi
 
 	return $?
@@ -649,13 +659,13 @@ run_convert () {
 run_favicons () {
 	dest_dir="${base}-favicons"
 
-	wxh=$(convert "${input}" -format "%w x %h" info:)
+	wxh=$("${magick_bin}" "${input}" -format "%w x %h" info:)
 	w=${wxh%% *}
 	h=${wxh##* }
 	max=$(( w > h ? w : h ))
 
 	SOURCE_IMG="${base}_square.png"
-	convert "${input}" -background transparent \
+	"${magick_bin}" "${input}" -background transparent \
 		-compose Copy -gravity center -extent ${max}x${max} "${SOURCE_IMG}"
 
 	PLATFORMS=(ANDROID APPLE FAVICON MS)
@@ -680,14 +690,14 @@ run_favicons () {
 
 		for i in ${SIZES[@]}; do
 			mkdir -p "${dest_dir}"
-			echo ${NAME}-${i}x${i}.png
-			"${convert_bin}" -resize "${i}x${i}!" "${SOURCE_IMG}" "${dest_dir}/${NAME}-${i}x${i}.png"
+			echo "${NAME}-${i}x${i}.png"
+			"${magick_bin}" "${SOURCE_IMG}" -resize "${i}x${i}!" "${dest_dir}/${NAME}-${i}x${i}.png"
 		done
 	done
 
-	"${convert_bin}" -resize 16x16 "${SOURCE_IMG}" "${dest_dir}/favicon.ico"
-	"${convert_bin}" -resize 192x192 "${SOURCE_IMG}" "${dest_dir}/apple-icon.png"
-	"${convert_bin}" -resize 192x192 "${SOURCE_IMG}" "${dest_dir}/apple-icon-precomposed.png"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 16x16 "${dest_dir}/favicon.ico"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 192x192 "${dest_dir}/apple-icon.png"
+	"${magick_bin}" "${SOURCE_IMG}" -resize 192x192 "${dest_dir}/apple-icon-precomposed.png"
 
 	yes | rm "${SOURCE_IMG}"
 
@@ -748,20 +758,20 @@ EOF
 }
 
 run_montage () {
-	msg=$(convert "${img_to_add}" -format "%h" info: 2>&1)
+	msg=$("${magick_bin}" "${img_to_add}" -format "%h" info: 2>&1)
 	code=$?
 	[ $code -gt 0 ] && return $code
 
-	height=$(convert "${input}" -format "%h" info: 2>&1)
-	msg=$("${montage_bin}" "${input}" -resize x${height} "${img_to_add}" -geometry +0+0 "${dir}/${base}_${img_to_add_base}.${ext}" 2>&1)
+	height=$("${magick_bin}" "${input}" -format "%h" info: 2>&1)
+	msg=$("${magick_bin}" montage "${input}" -resize "x${height}" "${img_to_add}" -geometry +0+0 "${dir}/${base}_${img_to_add_base}.${ext}" 2>&1)
 	return $?
 }
 
 run_overturn () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -"${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -"${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -"${value}" "${input}" "${dir}/${base}_${value}.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -"${value}" "${dir}/${base}_${value}.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -770,15 +780,15 @@ run_overturn () {
 run_rotate () {
 	if [ "${overwrite}" = true ]; then
 		if [ "${angle}" = "auto" ]; then
-			msg=$("${mogrify_bin}" -auto-orient "${input}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -auto-orient "${input}" 2>&1)
 		else
-			msg=$("${mogrify_bin}" -rotate ${angle} "${input}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -rotate "${angle}" "${input}" 2>&1)
 		fi
 	else
 		if [ "${angle}" = "auto" ]; then
-			msg=$("${convert_bin}" -auto-orient "${input}" "${dir}/${base}_rotated.${ext}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -auto-orient "${dir}/${base}_rotated.${ext}" 2>&1)
 		else
-			msg=$("${convert_bin}" -rotate ${angle} "${input}" "${dir}/${base}_rotated.${ext}" 2>&1)
+			msg=$("${magick_bin}" "${input}" -rotate "${angle}" "${dir}/${base}_rotated.${ext}" 2>&1)
 		fi
 	fi
 
@@ -787,9 +797,9 @@ run_rotate () {
 
 run_sepia () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" -sepia-tone "${value}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -sepia-tone "${value}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" -sepia-tone "${value}" "${input}" "${dir}/${base}_sepia.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -sepia-tone "${value}" "${dir}/${base}_sepia.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -800,21 +810,21 @@ run_shadow () {
 	[ -n "${jfif}" ] && "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --sorry "${msg_common_transparent_unsupported_text}" && return 0
 
 	if [ "${overwrite}" = true ]; then
-		msg=$("${convert_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${dir}/${base}_shadow.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" \( +clone -background black -shadow 80x8+8+8 \) +swap -background none -layers merge +repage "${dir}/${base}_shadow.${ext}" 2>&1)
 	fi
 
 	return $?
 }
 
 run_timestamp () {
-	timestamp=$(jhead -exifmap 01.jpg | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
+	timestamp=$("${jhead_bin}" -exifmap 01.jpg | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
 
 	if [ "${overwrite}" = true ]; then
-		msg=$("${convert_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${dir}/${base}_timestamp.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${dir}/${base}_timestamp.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -822,9 +832,9 @@ run_timestamp () {
 
 run_transparent2color () {
 	if [ "${overwrite}" = true ]; then
-		msg=$("${mogrify_bin}" "${input}" -background "${color}" -flatten "${input}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -background "${color}" -flatten "${input}" 2>&1)
 	else
-		msg=$("${convert_bin}" "${input}" -background "${color}" -flatten "${dir}/${base}_background.${ext}" 2>&1)
+		msg=$("${magick_bin}" "${input}" -background "${color}" -flatten "${dir}/${base}_background.${ext}" 2>&1)
 	fi
 
 	return $?
@@ -958,13 +968,16 @@ manage_input_separately () {
 	[ ${#} -lt 1 ] && help
 	[ ${#} -gt 1 ] && multiple_files=true
 
+    # update messages with presently available vars
+    load_language
+
 	type run_${action} > /dev/null || \
 		{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_action_not_found_text}" && exit 2; }
 
 	[ "${ask_overwrite}" = true ] && do_you_want_to_overwrite
 
 	quantity=$#
-	dbus_ref=$(kdialog --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
+	dbus_ref=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
 	qdbus $dbus_ref showCancelButton true
 	processed=0
 
@@ -984,7 +997,7 @@ manage_input_separately () {
 		[ ! -f "${input}" ] && "${kdialog_bin}" --title --icon configure "${!msg_title}" --error "${msg_common_file_not_found}" && break
 		qdbus $dbus_ref setLabelText "${msg_common_progress_text}"
 
-		msg_finish_title=msg_${action}_finish_title
+		# msg_finish_title=msg_${action}_finish_title
 		run_${action} && \
 			"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 			{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1002,7 +1015,7 @@ manage_input_at_once () {
 	name="${1##*/}"
 	load_language
 
-	msg_finish_title=msg_${action}_finish_title
+	# msg_finish_title=msg_${action}_finish_title
 	run_${action} "${@}" && \
 		"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 		{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
@@ -1013,9 +1026,11 @@ manage_input_at_once () {
 
 set_compress () {
 	value="${1}"
+	quality="75%"
 	shift
 
-	quality="75%"
+	load_language
+
 	if [ "${value}" = "custom" ]; then
 		quality=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_compress_quality_input_text}" "${quality}") || \
 			{ "${kdialog_bin}" --title "${!msg_title}" --passivepopup "${msg_common_abort}" 5 && exit 2; }
@@ -1040,6 +1055,8 @@ set_progressive () {
 set_resize () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		scale=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_resize_scale_input_text}") || \
@@ -1108,6 +1125,8 @@ set_convert () {
 	value="${1}"
 	shift
 
+	load_language
+
 	[ "${value}" = "formats" ] && { formats; exit 0; }
 
 	if [ "${value}" = "custom" ]; then
@@ -1158,6 +1177,8 @@ set_overturn () {
 set_rotate () {
 	value="${1}"
 	shift
+
+	load_language
 
 	if [ "${value}" = "custom" ]; then
 		angle=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --inputbox "${msg_rotate_angle_input_text}") || \
@@ -1279,31 +1300,36 @@ set_purejpg () {
 kdialog_bin=$(which kdialog)
 [ -z "${kdialog_bin}" ] && echo "kdialog not found!" && exit 1
 
-mogrify_bin=$(which mogrify)
-[ -z "${mogrify_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_mogrify_not_found_text}" && exit 2
+magick_bin=$(which magick)
+[ -z "${magick_bin}" ] && \
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_magick_not_found_text}" && exit 2
 
-convert_bin=$(which convert)
-[ -z "${convert_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_convert_not_found_text}" && exit 2
+# mogrify_bin=$(which mogrify)
+# [ -z "${mogrify_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_mogrify_not_found_text}" && exit 2
 
-montage_bin=$(which montage)
-[ -z "${montage_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
+# convert_bin=$(which convert)
+# [ -z "${convert_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_convert_not_found_text}" && exit 2
+
+# montage_bin=$(which montage)
+# [ -z "${montage_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
 
 jhead_bin=$(which jhead)
 [ -z "${jhead_bin}" ] && \
-	"${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_jhead_not_found_text}" && exit 2
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_jhead_not_found_text}" && exit 2
 
 webp_bin=$(which webpinfo)
 [ -z "${webp_bin}" ] && \
-	"${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_webp_not_found_text}" && exit 2
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
 
 action="${1}"
 shift
 
 load_language
 msg_title=msg_${action}_title
+msg_finish_title=msg_${action}_finish_title
 
 type set_${action} &> /dev/null || \
 	{ "${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_action_not_found_text}" && exit 3; }

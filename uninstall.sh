@@ -1,7 +1,8 @@
 #! /bin/bash
 #
-# 	Part of kde-service-menu-reimage Version 2.5
+# 	Part of kde-service-menu-reimage (version 2.5)
 # 	Copyright (C) 2018-2019 Giuseppe Benigno <giuseppe.benigno(at)gmail.com>
+# 	Copyright (C) 2024 Irfan Hakim <irfanhakim.as(at)yahoo.com>
 #
 # 	This program is free software: you can redistribute it and/or modify
 # 	it under the terms of the GNU General Public License as published by
@@ -17,32 +18,50 @@
 # 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-if [[ $EUID -eq 0 ]]; then
-    bin_dir="$(kf5-config --path exe | sed "s/.*://")"
-    desktop_dir="$(kf5-config --path services | sed "s/.*://")ServiceMenus/"
-    doc_dir="$(kf5-config --prefix)/share/doc/kde-service-menu-reimage/"
-    echo "Removing kde-service-menu-reimage system wide"
+# environment variables
+qtpaths_bin="${qtpaths_bin:-"qtpaths"}"
+user_install_prefix="${user_install_prefix:-"${HOME}/.local"}"
+
+# local variables
+required_vars=("bin_dir" "servicemenu_dir" "doc_dir")
+servicemenu_files=($(shopt -s nullglob; for f in ServiceMenus/*.desktop; do basename "${f}"; done))
+
+# determine installation directories
+if [[ ${EUID} -eq 0 ]]; then
+    bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
+    doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
+    install_mode="system"
 else
-    bin_dir="$HOME/bin"
-    desktop_dir="$(kf5-config --path services | sed "s/:.*//")"
-    doc_dir=$HOME"/share/doc/kde-service-menu-reimage/"
-    echo "Removing kde-service-menu-reimage locally"
+    bin_dir="${user_install_prefix}/bin"
+    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
+    doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
+    install_mode="local"
 fi
 
-echo "removing ${bin_dir}reimage-kdialog"
-rm "${bin_dir}/reimage-kdialog"
+# ensure all required variables are set
+for var in "${required_vars[@]}"; do
+    if [ -z "${!var}" ]; then
+        echo "ERROR: Required variable ${var} was not set successfully. Aborting installation of kde-service-menu-reimage."
+        exit 1
+    fi
+done
 
-echo "removing ${desktop_dir}reimage-compress-resize.desktop"
-rm "${desktop_dir}reimage-compress-resize.desktop"
-echo "removing ${desktop_dir}reimage-convert-rotate.desktop"
-rm "${desktop_dir}reimage-convert-rotate.desktop"
-echo "removing ${desktop_dir}reimage-metadata.desktop"
-rm "${desktop_dir}reimage-metadata.desktop"
-echo "removing ${desktop_dir}reimage-tools.desktop"
-rm "${desktop_dir}reimage-tools.desktop"
+echo "Uninstalling kde-service-menu-reimage (${install_mode}) ..."
 
-echo "removing ${doc_dir}"
-rm -rf "${doc_dir}"
+# remove required binaries
+echo "Removing ${bin_dir}/reimage-kdialog" && rm -f "${bin_dir}/reimage-kdialog" && \
+# remove required service menus
+for file in "${servicemenu_files[@]}"; do
+    echo "Removing ${servicemenu_dir}/${file}" && rm -f "${servicemenu_dir}/${file}"
+done && \
+# remove documentation files
+echo "Removing ${doc_dir}" && rm -rf "${doc_dir}"
 
-echo
-echo "kde-service-menu-reimage has been removed. Good bye."
+# report uninstallation result
+if [ ${?} -eq 0 ]; then
+    echo "SUCCESS: kde-service-menu-reimage has been uninstalled successfully."
+else
+    echo "ERROR: kde-service-menu-reimage uninstallation failed."
+    exit 1
+fi
