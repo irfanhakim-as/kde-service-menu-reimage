@@ -174,3 +174,12 @@ jobs:
           --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload assets to release
+      id: upload_asset
+      if: steps.package_asset.conclusion == 'success' && steps.create_release.conclusion == 'success'
+      run: |
+        # upload asset to the GitHub release
+        gh release upload "v${{ steps.get_metadata.outputs.version }}" "${{ steps.package_asset.outputs.asset }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
