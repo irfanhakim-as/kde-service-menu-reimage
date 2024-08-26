@@ -26,7 +26,6 @@ package() {
     bin_dir="$(qtpaths --install-prefix)/bin"
     servicemenu_dir="$(qtpaths --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
     doc_dir="$(qtpaths --install-prefix)/share/doc/kde-service-menu-reimage/"
-
     # install required binaries
     install -d "${bin_dir}" && \
     install -m 755 -p bin/* "${bin_dir}" && \
