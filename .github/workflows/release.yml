@@ -80,7 +80,7 @@ jobs:
         # export result to output
         echo "exists=${exists}" >> ${GITHUB_OUTPUT}
 
-    - name: Commit updated files
+    - name: Commit and push updated files
       id: commit_changes
       if: steps.check_changes.outputs.exists == 'true'
       run: |
