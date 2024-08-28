@@ -1,4 +1,4 @@
-name: Update Version and Create Release
+name: Manage version, release, and PKGBUILD
 
 on:
   push:
