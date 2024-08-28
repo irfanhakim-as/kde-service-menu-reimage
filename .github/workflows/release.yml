@@ -142,6 +142,16 @@ jobs:
           # update the md5sums array with the new md5sum
           sed -i "s/^md5sums=.*/md5sums=('${md5sum}')/" PKGBUILD
 
+      - name: Update SRCINFO
+        id: update_srcinfo
+        run: |
+          docker run --rm -v ${PWD}:/pkgbuild -w /pkgbuild archlinux:base-devel bash -c "
+          pacman -Sy --noconfirm base-devel && \
+          useradd builder -m && \
+          echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+          chmod -R a+rw . && \
+          sudo -u builder makepkg --printsrcinfo > .SRCINFO"
+
       - name: Check if files have changes
         id: check_changes
         run: |
