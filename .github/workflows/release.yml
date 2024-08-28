@@ -127,6 +127,23 @@ jobs:
           echo "asset=${asset}" | tee -a ${GITHUB_OUTPUT}
           echo "md5sum=$(md5sum "${asset}" | awk '{print $1}')" | tee -a ${GITHUB_OUTPUT}
 
+      - name: Update PKGBUILD
+        id: update_pkgbuild
+        run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+          release="1"
+          md5sum="${{ steps.package_asset.outputs.md5sum }}"
+
+          # update pkgver in PKGBUILD
+          sed -i "s/^pkgver=.*/pkgver=${version}/" PKGBUILD
+
+          # reset the pkgrel number to 1
+          sed -i "s/^pkgrel=.*/pkgrel=${release}/" PKGBUILD
+
+          # update the md5sums array with the new md5sum
+          sed -i "s/^md5sums=.*/md5sums=('${md5sum}')/" PKGBUILD
+
       - name: Check if files have changes
         id: check_changes
         run: |
