@@ -10,9 +10,6 @@ on:
 permissions:
   contents: write
 
-env:
-  METADATA_FILE: "doc/package.conf"
-
 jobs:
   metadata:
     runs-on: ubuntu-latest
