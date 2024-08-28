@@ -87,7 +87,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update version in source code
+      - name: Update version in source files
         id: update_version
         run: |
           # set variables
