@@ -11,7 +11,7 @@ optdepends=('jhead: required for extracting exif data')
 provides=()
 conflicts=('kde-service-menu-reimage' 'kde-service-menu-reimage-mod')
 replaces=()
-source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_any.tar.gz")
+source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_${arch[0]}.tar.gz")
 md5sums=('SKIP')
 
 package() {
