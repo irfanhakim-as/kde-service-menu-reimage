@@ -6,6 +6,7 @@ on:
       - master                    # monitor changes only in the master branch
     paths:
       - doc/package.conf          # monitor changes to the package metadata file
+  workflow_dispatch:              # allow manually triggering the workflow
 
 env:
   GH_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
