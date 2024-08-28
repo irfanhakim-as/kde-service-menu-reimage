@@ -147,8 +147,11 @@ jobs:
       - name: Check if files have changes
         id: check_changes
         run: |
-          # add local files
-          git add .
+          # set variables
+          asset="${{ steps.package_asset.outputs.asset }}"
+
+          # add local files except asset
+          git add . -- ":!${asset}"
 
           # determine if changes were made
           if git diff --cached --exit-code >/dev/null; then
