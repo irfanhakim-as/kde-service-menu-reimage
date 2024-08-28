@@ -163,7 +163,7 @@ jobs:
           echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
 
       - name: Commit and push updated files
-        id: commit_changes
+        id: push_changes
         if: steps.check_changes.outputs.exists == 'true'
         run: |
           # set variables
