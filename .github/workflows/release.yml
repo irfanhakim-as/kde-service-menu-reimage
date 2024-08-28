@@ -7,9 +7,6 @@ on:
     paths:
       - doc/package.conf          # monitor changes to the package metadata file
 
-permissions:
-  contents: write
-
 env:
   GH_TOKEN: ${{ secrets.GH_ACTIONS_TOKEN }}
 
@@ -78,8 +75,6 @@ jobs:
 
           # export result to output
           echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   go:
     runs-on: ubuntu-latest
@@ -220,8 +215,6 @@ jobs:
             --notes "$(echo -e "${release_notes}")" \
             --target "${main_branch}" \
             --generate-notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload assets to release
         id: upload_asset
@@ -232,5 +225,3 @@ jobs:
 
           # upload asset to the GitHub release
           gh release upload "v${version}" "${asset}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
