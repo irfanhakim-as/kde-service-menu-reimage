@@ -1,0 +1,95 @@
+name: Update AUR
+
+on:
+  push:
+    branches:
+      - master                    # monitor changes only in the master branch
+    paths:
+      - PKGBUILD                  # monitor changes to the PKGBUILD file
+  workflow_dispatch:              # allow manually triggering the workflow
+
+env:
+  REMOTE_HOST: aur.archlinux.org
+  REMOTE_HOST_USER: aur
+  REMOTE_HOST_PREFIX: ssh
+  REMOTE_REPO_NAMESPACE: ''
+  REMOTE_REPO_NAME: kf6-service-menu-reimage
+  REMOTE_REPO_USER: irfanhakim
+  REMOTE_REPO_EMAIL: irfanhakim.as@yahoo.com
+
+jobs:
+  update-aur:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        id: configure_ssh
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.AUR_PRIVATE_KEY }}
+
+      - name: Add remote host to known hosts
+        id: add_remote_host
+        run: |
+          ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
+
+      - name: Clone the remote repository
+        id: clone_remote_repo
+        run: |
+          # set variables
+          REMOTE_HOST_PREFIX="${{ env.REMOTE_HOST_PREFIX }}${{ env.REMOTE_HOST_PREFIX && '://' }}"
+          REMOTE_REPO_NAMESPACE="${{ env.REMOTE_REPO_NAMESPACE && ':' }}${{ env.REMOTE_REPO_NAMESPACE }}"
+
+          # clone remote repository
+          git clone ${REMOTE_HOST_PREFIX}${REMOTE_HOST_USER:-git}@${REMOTE_HOST}${REMOTE_REPO_NAMESPACE}/${REMOTE_REPO_NAME}.git
+
+      - name: Copy PKGBUILD to remote repository
+        id: copy_pkgbuild
+        run: |
+          cp PKGBUILD ${REMOTE_REPO_NAME}/PKGBUILD
+
+      - name: Check if PKGBUILD has changes
+        id: check_changes
+        run: |
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          # add PKGBUILD
+          git add PKGBUILD
+
+          # check for changes
+          if git diff --cached --exit-code >/dev/null; then
+            echo "No changes have been made to PKGBUILD."
+            exists=false
+          else
+            echo "PKGBUILD has been updated and is pending commit."
+            exists=true
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Commit and push updated PKGBUILD
+        id: push_changes
+        if: steps.check_changes.outputs.exists == 'true'
+        run: |
+          # set variables
+          source PKGBUILD
+          version="${pkgver}"
+          release="${pkgrel}"
+
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          # configure git
+          git config --local user.name "${REMOTE_REPO_USER:-github-actions[bot]}"
+          git config --local user.email "${REMOTE_REPO_EMAIL:-github-actions[bot]@users.noreply.github.com}"
+
+          # commit changes
+          git commit -m "Update to ${version}-${pkgrel}"
+
+          # push commit
+          git push -u origin HEAD
