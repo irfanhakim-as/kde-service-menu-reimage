@@ -14,11 +14,17 @@ env:
   METADATA_FILE: "doc/package.conf"
 
 jobs:
-  release:
+  metadata:
     runs-on: ubuntu-latest
-
+    env:
+      METADATA_FILE: "demo/package.conf"
+      REQUIRED_VARS: "namespace version arch"
+    outputs:
+      version: ${{ steps.get_metadata.outputs.version }}
+      namespace: ${{ steps.get_metadata.outputs.namespace }}
+      arch: ${{ steps.get_metadata.outputs.arch }}
     steps:
-      - name: Check out the code
+      - name: Check out the repository
         id: checkout
         uses: actions/checkout@v3
         with:
@@ -27,13 +33,10 @@ jobs:
       - name: Source metadata file and export variables
         id: get_metadata
         run: |
-          # set required variables
-          required_vars=("namespace" "version" "arch")
-
           # source values from metadata file
           source "${METADATA_FILE}"
 
-          for var in "${required_vars[@]}"; do
+          for var in ${REQUIRED_VARS}; do
             # ensure variable is set
             key="__${var}__"
             if [ -z "${!key}" ]; then
@@ -44,23 +47,85 @@ jobs:
             echo "${var}=${!key}" | tee -a ${GITHUB_OUTPUT}
           done
 
+  check:
+    runs-on: ubuntu-latest
+    needs: metadata
+    outputs:
+      release_exists: ${{ steps.check_release.outputs.exists }}
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check if release exists
+        id: check_release
+        run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+
+          # check if release of said version exists
+          if [[ "$(gh release view "v${version}" 2>&1)" == "release not found" ]]; then
+            echo "Release v${version} has not been created."
+            exists=false
+          else
+            echo "Release v${version} already exists."
+            exists=true
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  go:
+    runs-on: ubuntu-latest
+    needs: [metadata, check]
+    if: needs.check.outputs.release_exists == 'false'
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Update version in source code
         id: update_version
         run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+
           # update version badge in markdown files
-          find . -type f -name "*.md" -exec sed -i "s/\(Version-\)[0-9]*\.[0-9]*\.[0-9]*\(-informational\)/\1${{ steps.get_metadata.outputs.version }}\2/g;s/\[Version: [0-9]*\.[0-9]*\.[0-9]*\]/\[Version: ${{ steps.get_metadata.outputs.version }}\]/g" {} +
+          find . -type f -name "*.md" -exec sed -i "s/\(Version-\)[0-9]*\.[0-9]*\.[0-9]*\(-informational\)/\1${version}\2/g;s/\[Version: [0-9]*\.[0-9]*\.[0-9]*\]/\[Version: ${version}\]/g" {} +
 
           # update version in shell files
-          find . -type f -name "*.sh" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_metadata.outputs.version }})/g" {} +
+          find . -type f -name "*.sh" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${version})/g" {} +
 
           # update version in binary files
-          find ./bin -type f -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_metadata.outputs.version }})/g" {} +
+          find ./bin -type f -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${version})/g" {} +
 
           # update version in config files
-          find ./doc -type f -name "*.config" -exec sed -i "s/version=.*/version=${{ steps.get_metadata.outputs.version }}/g" {} +
+          find ./doc -type f -name "*.config" -exec sed -i "s/version=.*/version=${version}/g" {} +
 
           # update version in service menu .desktop files
-          find ./ServiceMenus -type f -name "*.desktop" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${{ steps.get_metadata.outputs.version }})/g" {} +
+          find ./ServiceMenus -type f -name "*.desktop" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${version})/g" {} +
+
+      - name: Package assets into archive
+        id: package_asset
+        run: |
+          # set package values
+          name="${{ needs.metadata.outputs.namespace }}"
+          version="${{ needs.metadata.outputs.version }}"
+          arch="${{ needs.metadata.outputs.arch }}"
+          asset="${name}_${version}_${arch}.tar.gz"
+
+          # package required assets into a tar.gz file
+          tar -czvf "${asset}" bin doc ServiceMenus *.sh README.md
+
+          # export result to output
+          echo "asset=${asset}" | tee -a ${GITHUB_OUTPUT}
+          echo "md5sum=$(md5sum "${asset}" | awk '{print $1}')" | tee -a ${GITHUB_OUTPUT}
 
       - name: Check if files have changes
         id: check_changes
@@ -70,112 +135,65 @@ jobs:
 
           # determine if changes were made
           if git diff --cached --exit-code >/dev/null; then
-            echo "Changes have not been made."
+            echo "No changes have been made."
             exists=false
           else
-            echo "Changes have been made that are pending commit."
+            echo "Changes have been made and are pending commit."
             exists=true
           fi
 
           # export result to output
-          echo "exists=${exists}" >> ${GITHUB_OUTPUT}
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
 
       - name: Commit and push updated files
         id: commit_changes
         if: steps.check_changes.outputs.exists == 'true'
         run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+
           # configure git user
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
           # commit changes
-          git commit -m "Bump version to ${{ steps.get_metadata.outputs.version }}"
+          git commit -m "Bump version to ${version}"
 
           # push changes to current remote branch
           git push -u origin HEAD
 
-      - name: Check if release exists
-        id: check_release
-        run: |
-          # check if release of current version exists
-          if [[ "$(gh release view "v${{ steps.get_metadata.outputs.version }}" 2>&1)" == "release not found" ]]; then
-            echo "Release v${{ steps.get_metadata.outputs.version }} has not been created."
-            exists=false
-          else
-            echo "Release v${{ steps.get_metadata.outputs.version }} already exists."
-            exists=true
-          fi
-
-          # export result to output
-          echo "exists=${exists}" >> ${GITHUB_OUTPUT}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get previous release tag
-        id: get_prev_tag
-        if: steps.check_release.outputs.exists == 'false'
-        run: |
-          # determine previous tag
-          prev_tag=$(git describe --tags --abbrev=0 HEAD^ || echo "")
-
-          # check if previous tag exists
-          if [ -z "${prev_tag}" ]; then
-            echo "No previous tag found, this might be the first release."
-            prev_tag="HEAD" # use HEAD to include all commits
-          fi
-
-          # export result to output
-          echo "Previous version: ${prev_tag}"
-          echo "prev_tag=${prev_tag}" >> ${GITHUB_OUTPUT}
-
       - name: Get commit messages since last release
         id: get_commits
-        if: steps.check_release.outputs.exists == 'false'
         run: |
           # get previous version
-          prev_version="${{ steps.get_prev_tag.outputs.prev_tag }}"
+          prev_version=$(git describe --tags --abbrev=0 HEAD^ || echo "HEAD")
 
           # get commits between versions
-          if [[ "${prev_version}" == "HEAD" ]]; then
-            commits="$(git log --oneline | base64 -w 0)"
-          else
-            commits="$(git log "${prev_version}"..HEAD --oneline | base64 -w 0)"
+          if [[ "${prev_version}" != "HEAD" ]]; then
+            prev_version="${prev_version}..HEAD"
           fi
+          commits="$(git log "${prev_version}" --oneline | base64 -w 0)"
 
           # export result to output
-          echo "Latest commits: ${commits}"
-          echo "commits=${commits}" >> ${GITHUB_OUTPUT}
-
-      - name: Package assets into archive
-        id: package_asset
-        if: steps.check_release.outputs.exists == 'false'
-        run: |
-          # set package values
-          name="${{ steps.get_metadata.outputs.namespace }}"
-          version="${{ steps.get_metadata.outputs.version }}"
-          arch="${{ steps.get_metadata.outputs.arch }}"
-          asset="${name}_${version}_${arch}.tar.gz"
-
-          # package required assets into a tar.gz file
-          tar -czvf "${asset}" bin doc ServiceMenus *.sh README.md
-
-          # export asset path
-          echo "asset=${asset}" >> ${GITHUB_OUTPUT}
+          echo "commits=${commits}" | tee -a ${GITHUB_OUTPUT}
 
       - name: Create GitHub release
         id: create_release
-        if: steps.package_asset.conclusion == 'success'
         run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+          commits="${{ steps.get_commits.outputs.commits }}"
+
           # determine main branch
           main_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
           # decode the commit messages
-          decoded_commits=$(echo "${{ steps.get_commits.outputs.commits }}" | base64 --decode)
+          decoded_commits=$(echo "${commits}" | base64 --decode)
           # prepare release notes
-          release_notes="Release v${{ steps.get_metadata.outputs.version }}.\n\n**Changes**:\n\n${decoded_commits}"
+          release_notes="Release v${version}.\n\n**Changes**:\n\n${decoded_commits}"
 
           # create release
-          gh release create "v${{ steps.get_metadata.outputs.version }}" \
-            --title "v${{ steps.get_metadata.outputs.version }}" \
+          gh release create "v${version}" \
+            --title "v${version}" \
             --notes "$(echo -e "${release_notes}")" \
             --target "${main_branch}" \
             --generate-notes
@@ -184,9 +202,12 @@ jobs:
 
       - name: Upload assets to release
         id: upload_asset
-        if: steps.package_asset.conclusion == 'success' && steps.create_release.conclusion == 'success'
         run: |
+          # set variables
+          version="${{ needs.metadata.outputs.version }}"
+          asset="${{ steps.package_asset.outputs.asset }}"
+
           # upload asset to the GitHub release
-          gh release upload "v${{ steps.get_metadata.outputs.version }}" "${{ steps.package_asset.outputs.asset }}"
+          gh release upload "v${version}" "${asset}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
