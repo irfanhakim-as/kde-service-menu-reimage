@@ -46,33 +46,33 @@ jobs:
           # clone remote repository
           git clone ${REMOTE_HOST_PREFIX}${REMOTE_HOST_USER:-git}@${REMOTE_HOST}${REMOTE_REPO_NAMESPACE}/${REMOTE_REPO_NAME}.git
 
-      - name: Copy PKGBUILD to remote repository
-        id: copy_pkgbuild
+      - name: Copy package files to remote repository
+        id: copy_pkgfiles
         run: |
-          cp PKGBUILD ${REMOTE_REPO_NAME}/PKGBUILD
+          cp .SRCINFO PKGBUILD ${REMOTE_REPO_NAME}/
 
-      - name: Check if PKGBUILD has changes
+      - name: Check if package files have changes
         id: check_changes
         run: |
           # change working directory
           cd ${REMOTE_REPO_NAME}
 
-          # add PKGBUILD
-          git add PKGBUILD
+          # add package files
+          git add .SRCINFO PKGBUILD
 
           # check for changes
           if git diff --cached --exit-code >/dev/null; then
-            echo "No changes have been made to PKGBUILD."
+            echo "No changes have been made to the package files."
             exists=false
           else
-            echo "PKGBUILD has been updated and is pending commit."
+            echo "Package files have been updated and are pending commit."
             exists=true
           fi
 
           # export result to output
           echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
 
-      - name: Commit and push updated PKGBUILD
+      - name: Commit and push updated package files
         id: push_changes
         if: steps.check_changes.outputs.exists == 'true'
         run: |
