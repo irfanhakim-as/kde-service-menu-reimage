@@ -1,5 +1,5 @@
 # Maintainer: Irfan Hakim <irfanhakim.as@yahoo.com>
-pkgname='kf6-service-menu-reimage'
+pkgname='kf6-servicemenus-reimage'
 pkgver=2.6.0
 pkgrel=1
 pkgdesc="Manipulate images e their metadata"

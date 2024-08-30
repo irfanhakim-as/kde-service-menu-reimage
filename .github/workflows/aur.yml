@@ -13,7 +13,7 @@ env:
   REMOTE_HOST_USER: aur
   REMOTE_HOST_PREFIX: ssh
   REMOTE_REPO_NAMESPACE: ''
-  REMOTE_REPO_NAME: kf6-service-menu-reimage
+  REMOTE_REPO_NAME: kf6-servicemenus-reimage
   REMOTE_REPO_USER: irfanhakim
   REMOTE_REPO_EMAIL: irfanhakim.as@yahoo.com
 
