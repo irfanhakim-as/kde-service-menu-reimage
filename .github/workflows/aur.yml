@@ -46,10 +46,23 @@ jobs:
           # clone remote repository
           git clone ${REMOTE_HOST_PREFIX}${REMOTE_HOST_USER:-git}@${REMOTE_HOST}${REMOTE_REPO_NAMESPACE}/${REMOTE_REPO_NAME}.git
 
-      - name: Copy package files to remote repository
-        id: copy_pkgfiles
+      - name: Copy PKGBUILD to remote repository
+        id: copy_pkgbuild
         run: |
-          cp .SRCINFO PKGBUILD ${REMOTE_REPO_NAME}/
+          cp PKGBUILD ${REMOTE_REPO_NAME}/
+
+      - name: Update SRCINFO
+        id: update_srcinfo
+        run: |
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          docker run --rm -v ${PWD}:/pkgbuild -w /pkgbuild archlinux:base-devel bash -c "
+          pacman -Sy --noconfirm base-devel && \
+          useradd builder -m && \
+          echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
+          chmod -R a+rw . && \
+          sudo -u builder makepkg --printsrcinfo > .SRCINFO"
 
       - name: Check if package files have changes
         id: check_changes
