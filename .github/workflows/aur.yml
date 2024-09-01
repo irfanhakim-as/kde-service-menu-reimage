@@ -46,10 +46,10 @@ jobs:
           # clone remote repository
           git clone ${REMOTE_HOST_PREFIX}${REMOTE_HOST_USER:-git}@${REMOTE_HOST}${REMOTE_REPO_NAMESPACE}/${REMOTE_REPO_NAME}.git
 
-      - name: Copy package files to remote repository
-        id: copy_pkgfiles
+      - name: Copy PKGBUILD to remote repository
+        id: copy_pkgbuild
         run: |
-          cp .SRCINFO PKGBUILD ${REMOTE_REPO_NAME}/
+          cp PKGBUILD ${REMOTE_REPO_NAME}/
 
       - name: Check if package files have changes
         id: check_changes
