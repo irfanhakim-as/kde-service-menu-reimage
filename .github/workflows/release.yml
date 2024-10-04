@@ -15,7 +15,7 @@ jobs:
   metadata:
     runs-on: ubuntu-latest
     env:
-      METADATA_FILE: "demo/package.conf"
+      METADATA_FILE: "doc/package.conf"
       REQUIRED_VARS: "namespace version arch"
     outputs:
       version: ${{ steps.get_metadata.outputs.version }}
