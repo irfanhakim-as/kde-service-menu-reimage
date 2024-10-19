@@ -115,3 +115,48 @@ Follow these steps to uninstall the program:
     ```sh
     sudo ./uninstall.sh
     ```
+
+## Contributing
+
+Here are some guidelines on how you could contribute to the project:
+
+### Reporting Issues
+
+When creating an issue, please include the following information to help with troubleshooting:
+
+- **System Information**:
+
+  - Operating System and version (i.e. `Debian 12`).
+  - Kernel version (i.e. `6.1.0-25-amd64`).
+  - Desktop environment (if applicable).
+
+- **Software Information**:
+
+  - Method of installing `kde-service-menu-reimage` (i.e. `AUR`).
+  - Version of `kde-service-menu-reimage` you are using.
+
+- **Steps to Reproduce**:
+
+  - Provide exact, step-by-step instructions to replicate the issue.
+  - Include expected and actual behavior.
+  - Attach any relevant logs or error messages (if applicable).
+
+### Contributing Code
+
+To contribute code to the project, please follow these best practices:
+
+- **Keep Commits Small and Focused**:
+
+  - Avoid large commits or pull requests (PRs). Focus on one issue or feature per PR.
+  - Small and focused changes are easier to review, test, and maintain.
+
+- **Make Meaningful Changes**:
+
+  - Ensure your code contributions have actual purpose and are not purely preferential (i.e. avoid changes like replacing double quotes with single quotes without functional reasons).
+  - Include a clear explanation of the problem your change solves or the enhancement it introduces (i.e. in code, commit, and/or PR description).
+
+- **Follow Existing Code Conventions**:
+
+  - Try to match the style and conventions of the existing codebase.
+  - For example: If the existing code defines variables using `${var}`, follow that format instead of using `$var`.
+  - This helps to keep the codebase consistent and clean.
