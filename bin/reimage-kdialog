@@ -269,7 +269,6 @@ load_language_it () {
 	msg_purejpg_finish_title="Elimina medatati non necessari da \"${name}\""
 }
 
-
 load_language () {
 	## Load localized strings AFTER english strings
 	## - if localized strings not found use english for default
@@ -978,7 +977,7 @@ manage_input_separately () {
 	[ "${ask_overwrite}" = true ] && do_you_want_to_overwrite
 
 	quantity=$#
-	dbus_ref=$(kdialog --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
+	dbus_ref=$("${kdialog_bin}" --icon configure --title "${!msg_title}" --progressbar "${msg_common_start}" $quantity)
 	qdbus $dbus_ref showCancelButton true
 	processed=0
 
@@ -998,7 +997,7 @@ manage_input_separately () {
 		[ ! -f "${input}" ] && "${kdialog_bin}" --title --icon configure "${!msg_title}" --error "${msg_common_file_not_found}" && break
 		qdbus $dbus_ref setLabelText "${msg_common_progress_text}"
 
-		msg_finish_title=msg_${action}_finish_title
+		# msg_finish_title=msg_${action}_finish_title
 		run_${action} && \
 			"${kdialog_bin}" --title "${!msg_finish_title}" --passivepopup "${msg_common_finish_ok}" 5 || \
 			{ qdbus $dbus_ref close; "${kdialog_bin}" --icon configure --title "${!msg_finish_title}" --detailederror "${msg_common_finish_error}" "${msg}"; exit 2; }
