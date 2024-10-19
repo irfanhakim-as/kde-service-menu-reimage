@@ -160,3 +160,8 @@ To contribute code to the project, please follow these best practices:
   - Try to match the style and conventions of the existing codebase.
   - For example: If the existing code defines variables using `${var}`, follow that format instead of using `$var`.
   - This helps to keep the codebase consistent and clean.
+
+- **Sign Your Commits**:
+
+  - Please ensure that all [commits are signed](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
+  - This helps verify the authenticity of contributions and maintain a trusted codebase.
