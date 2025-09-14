@@ -870,7 +870,6 @@ run_rff () {
 
 ## set file's datetime from Exif date
 run_sffe () {
-	custom_msg=msg_${action}_no_metadata
 	msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
 	code=$?
 	[ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
