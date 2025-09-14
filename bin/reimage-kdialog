@@ -882,7 +882,7 @@ run_sffn () {
 		{ "${kdialog_bin}" --title "${!msg_title}" --icon configure --error "${msg_common_name_error}" && qdbus $dbus_ref close && exit 2; }
 	local DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1\2\3\4\5.\6/")
 
-	msg=$(touch -t $DATE "${input}" 2>&1)
+	msg=$(touch -t "${DATE}" "${input}" 2>&1)
 	return $?
 }
 
