@@ -106,14 +106,14 @@ Follow these steps to uninstall the program:
 
 2. Uninstall using the provided uninstaller script:
 
-    If you have previously installed the program for a single user, simply run the script as is:
+   - If you have previously installed the program for a single user, simply run the script as is:
 
-    ```sh
-    ./uninstall.sh
-    ```
+      ```sh
+      ./uninstall.sh
+      ```
 
-    **Alternatively**, if you have installed the program system-wide, run the script with `sudo`:
+   - **Alternatively**, if you have installed the program system-wide, run the script with `sudo`:
 
-    ```sh
-    sudo ./uninstall.sh
-    ```
+      ```sh
+      sudo ./uninstall.sh
+      ```
