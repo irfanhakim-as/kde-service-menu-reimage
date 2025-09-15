@@ -958,7 +958,8 @@ run_de () {
 
 ## Delete IPTC section
 run_di () {
-	msg=$("${jhead_bin}" -q -di "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve -IPTC:All= "${input}" 2>&1) # removes iptc tags
+	# msg=$("${jhead_bin}" -q -di "${input}" 2>&1) # removes iptc, photoshop, and jfif tags
 	return $?
 }
 
