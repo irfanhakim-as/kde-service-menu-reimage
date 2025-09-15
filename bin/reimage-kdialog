@@ -146,6 +146,9 @@ load_language_en_US () {
 
 	msg_purejpg_title="Strip all unnecessary data"
 	msg_purejpg_finish_title="Strip all unnecessary data from \"${name}\""
+
+	msg_stripall_title="Strip all metadata"
+	msg_stripall_finish_title="Strip all metadata from \"${name}\""
 }
 
 load_language_it () {
@@ -269,6 +272,9 @@ load_language_it () {
 
 	msg_purejpg_title="Elimina medatati non necessari"
 	msg_purejpg_finish_title="Elimina medatati non necessari da \"${name}\""
+
+	msg_stripall_title="Elimina tutti i metadati"
+	msg_stripall_finish_title="Elimina tutti i metadati da \"${name}\""
 }
 
 load_language () {
@@ -317,6 +323,7 @@ help () {
 	echo "di		Delete IPTC section"
 	echo "dx		Delete XMP section"
 	echo "purejpg	Strip all unnecessary data"
+	echo "stripall	Strip all metadata"
 	echo
 	echo
 	echo "Examples:"
@@ -983,6 +990,12 @@ run_purejpg () {
 	return $?
 }
 
+## Strip all metadata
+run_stripall () {
+	msg=$(exiftool -overwrite_original -preserve -all= "${input}" 2>&1)
+	return $?
+}
+
 ########################################
 
 do_you_want_to_overwrite () {
@@ -1319,6 +1332,11 @@ set_dx () {
 
 ## Strip all unnecessary data
 set_purejpg () {
+	manage_input_separately "${@}"
+}
+
+## Strip all metadata
+set_stripall () {
 	manage_input_separately "${@}"
 }
 
