@@ -28,14 +28,14 @@ servicemenu_files=($(shopt -s nullglob; for f in ServiceMenus/*.desktop; do base
 
 # determine installation directories
 if [[ ${EUID} -eq 0 ]]; then
-    bin_dir="$(${qtpaths_bin} --install-prefix)/bin"
-    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
-    doc_dir="$(${qtpaths_bin} --install-prefix)/share/doc/kde-service-menu-reimage/"
+    bin_dir=$("${qtpaths_bin}" --install-prefix 2>/dev/null) && [ -n "${bin_dir}" ] && bin_dir="${bin_dir%%/}/bin"
+    servicemenu_dir=$("${qtpaths_bin}" --locate-dirs GenericDataLocation kio/servicemenus 2>/dev/null | sed 's/.*://')
+    doc_dir=$("${qtpaths_bin}" --install-prefix 2>/dev/null) && [ -n "${doc_dir}" ] && doc_dir="${doc_dir%%/}/share/doc/kde-service-menu-reimage"
     install_mode="system"
 else
-    bin_dir="${user_install_prefix}/bin"
-    servicemenu_dir="$(${qtpaths_bin} --locate-dirs GenericDataLocation kio/servicemenus | sed 's/:.*//')"
-    doc_dir="${user_install_prefix}/share/doc/kde-service-menu-reimage/"
+    [ -n "${user_install_prefix}" ] && bin_dir="${user_install_prefix%%/}/bin"
+    servicemenu_dir=$("${qtpaths_bin}" --locate-dirs GenericDataLocation kio/servicemenus 2>/dev/null | sed 's/:.*//')
+    [ -n "${user_install_prefix}" ] && doc_dir="${user_install_prefix%%/}/share/doc/kde-service-menu-reimage"
     install_mode="local"
 fi
 
