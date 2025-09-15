@@ -908,7 +908,9 @@ run_sffn () {
 
 ## set Exif datetime from file's date
 run_seff () {
-	msg=$("${jhead_bin}" -q -dsft "${input}" 2>&1)
+	# updating metadata creates a new file so overwriting and preserving file modification timestamp are needed
+	msg=$(exiftool -overwrite_original -preserve "-DateTimeOriginal<FileModifyDate" "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -dsft "${input}" 2>&1)
 	return $?
 }
 
@@ -918,7 +920,8 @@ run_sefn () {
 		{ "${kdialog_bin}" --title "${!msg_title}" --icon configure --error "${msg_common_name_error}" && qdbus $dbus_ref close && exit 2; }
 	local DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1:\2:\3-\4:\5:\6/")
 
-	msg=$("${jhead_bin}" -q -ts$DATE "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve "-DateTimeOriginal=${DATE}" "-CreateDate=${DATE}" "-ModifyDate=${DATE}" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -ts$DATE "${input}" 2>&1)
 	return $?
 }
 
@@ -931,14 +934,16 @@ run_ac () {
 
 ## Viwe metadata
 run_ve () {
-	msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
+	msg=$(exiftool -S "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
 	$kdialog_bin --msgbox "${msg}"
 	return $?
 }
 
 ## Extract metadata to file
 run_ee () {
- 	msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" > "${dir}/${base}.txt" 2>&1)
+	msg=$(exiftool -s "${input}" > "${input%.*}.txt" 2>&1)
+	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" > "${dir}/${base}.txt" 2>&1)
 	return $?
 }
 
@@ -952,7 +957,8 @@ run_dc () {
 
 ## Strip Exif section
 run_de () {
-	msg=$("${jhead_bin}" -q -de "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve -EXIF:All= "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -de "${input}" 2>&1)
 	return $?
 }
 
