@@ -965,7 +965,8 @@ run_di () {
 
 ## Delete XMP section
 run_dx () {
-	msg=$("${jhead_bin}" -q -dx "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve -XMP:All= "${input}" 2>&1) # removes xmp tags
+	# msg=$("${jhead_bin}" -q -dx "${input}" 2>&1) # removes xmp and jfif tags
 	return $?
 }
 
