@@ -316,7 +316,7 @@ help () {
 	echo "de		Strip Exif section"
 	echo "di		Delete IPTC section"
 	echo "dx		Delete XMP section"
-	echo "purejpeg	Strip all unnecessary data"
+	echo "purejpg	Strip all unnecessary data"
 	echo
 	echo
 	echo "Examples:"
