@@ -944,7 +944,9 @@ run_ee () {
 
 ## Delete comment field
 run_dc () {
-	msg=$("${jhead_bin}" -q -dc "${input}" 2>&1)
+	# deletes both exif's UserComment and jpeg's Comment tags from image
+	msg=$(exiftool -overwrite_original -preserve -UserComment= -Comment= "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -dc "${input}" 2>&1)
 	return $?
 }
 
