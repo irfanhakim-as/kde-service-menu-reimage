@@ -862,18 +862,21 @@ run_rfe () {
 
 ## rename file with file's datetime
 run_rff () {
-	DATE=$(date -r "${input}" +%Y-%m-%d_%H%M%S)
+	# rename file according to file datetime with original extension and format code in case of filename collision
+	msg=$(exiftool -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<FileModifyDate" -q "${input}" 2>&1)
+	return $?
+	# DATE=$(date -r "${input}" +%Y-%m-%d_%H%M%S)
 
-	if [ "${overwrite}" = true ]; then
-		[ "${dir}/${name}" = "${dir}/${DATE}.${ext}" ] && return 0
+	# if [ "${overwrite}" = true ]; then
+	# 	[ "${dir}/${name}" = "${dir}/${DATE}.${ext}" ] && return 0
 
-		msg=$(mv "${dir}/${name}" "${dir}/${DATE}.${ext}" 2>&1)
-		return $?
-	else
-		destination_dir="renamed"
-		msg=$(mkdir -p "${destination_dir}" 2>&1 && cp "${dir}/${name}" "${dir}/${destination_dir}/${DATE}.${ext}" 2>&1)
-		return $?
-	fi
+	# 	msg=$(mv "${dir}/${name}" "${dir}/${DATE}.${ext}" 2>&1)
+	# 	return $?
+	# else
+	# 	destination_dir="renamed"
+	# 	msg=$(mkdir -p "${destination_dir}" 2>&1 && cp "${dir}/${name}" "${dir}/${destination_dir}/${DATE}.${ext}" 2>&1)
+	# 	return $?
+	# fi
 }
 
 ########################################
