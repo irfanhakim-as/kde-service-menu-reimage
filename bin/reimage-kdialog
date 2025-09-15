@@ -972,7 +972,8 @@ run_dx () {
 
 ## Strip all unnecessary data
 run_purejpg () {
-	msg=$("${jhead_bin}" -q -purejpg "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve -all= -tagsFromFile @ -Orientation -ICC_Profile "${input}" 2>&1) # removes all metadata except orientation and icc color profiles
+	# msg=$("${jhead_bin}" -q -purejpg "${input}" 2>&1) # removes all metadata
 	return $?
 }
 
