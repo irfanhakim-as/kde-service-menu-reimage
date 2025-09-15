@@ -944,7 +944,9 @@ run_ve () {
 	msg=$(exiftool -S "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
 	$kdialog_bin --msgbox "${msg}"
-	return $?
+	code=$?
+	[ "${code}" -eq 2 ] && return 0 # suppress error when dialog is closed
+	return "${code}"
 }
 
 ## Extract metadata to file
