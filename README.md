@@ -4,7 +4,7 @@
 
 ## About
 
-This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde.org/p/1231579) Dolphin Service Menu to KDE Plasma 6. This fork aims to stay as close as possible to the original while actively maintaining it by fixing bugs, adding (strictly necessary) new features and improving existing ones.
+This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde.org/p/1231579) Dolphin Service Menu to KDE Plasma 6. This fork aims to stay as close as possible to the original while actively maintaining it by fixing bugs, adding (strictly necessary) new features, and improving existing ones.
 
 ## Dependencies
 
