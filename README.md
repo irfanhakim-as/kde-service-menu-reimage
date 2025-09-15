@@ -94,6 +94,18 @@ Follow these steps to install or update the program for a single user or system-
       sudo ./install.sh
       ```
 
+   - Note that the installer script expects you to have the `qtpaths` command available in your `PATH` to make up some of the target installation paths. In case you do have `qtpaths` installed in your `PATH` but it is named differently (i.e. `qtpaths6`), or if it is installed outside of your `PATH` (i.e. `/usr/lib/qt6/bin/qtpaths`), please adjust the `qtpaths_bin` environment variable accordingly, prior to running the installer script:
+
+      ```sh
+      # to install for a single user
+      qtpaths_bin=/path/to/qtpaths ./install.sh
+
+      # to install system-wide
+      sudo qtpaths_bin=/path/to/qtpaths ./install.sh
+      ```
+
+      Replace `/path/to/qtpaths` with the name or full path to the `qtpaths` utility you have installed.
+
 ## Uninstallation
 
 Follow these steps to uninstall the program:
@@ -117,3 +129,15 @@ Follow these steps to uninstall the program:
       ```sh
       sudo ./uninstall.sh
       ```
+
+   - Note that the uninstaller script expects you to have the `qtpaths` command available in your `PATH` to make up some of the target installation paths. In case you do have `qtpaths` installed in your `PATH` but it is named differently (i.e. `qtpaths6`), or if it is installed outside of your `PATH` (i.e. `/usr/lib/qt6/bin/qtpaths`), please adjust the `qtpaths_bin` environment variable accordingly, prior to running the uninstaller script:
+
+      ```sh
+      # if it was installed for a single user
+      qtpaths_bin=/path/to/qtpaths ./uninstall.sh
+
+      # if it was installed system-wide
+      sudo qtpaths_bin=/path/to/qtpaths ./uninstall.sh
+      ```
+
+      Replace `/path/to/qtpaths` with the name or full path to the `qtpaths` utility you have installed.
