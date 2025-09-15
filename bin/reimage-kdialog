@@ -924,7 +924,8 @@ run_sefn () {
 
 ## Add comment
 run_ac () {
-	msg=$("${jhead_bin}" -q -cl "${comment}" "${input}" 2>&1)
+	msg=$(exiftool -overwrite_original -preserve -UserComment="${comment}" "${input}" 2>&1) # adds comment as exif's UserComment tag
+	# msg=$("${jhead_bin}" -q -cl "${comment}" "${input}" 2>&1) # adds comment as jpeg's Comment tag
 	return $?
 }
 
