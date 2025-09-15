@@ -31,6 +31,7 @@ load_language_en_US () {
 	# msg_common_mogrify_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_convert_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_montage_not_found_text="Software ImageMagick not found! Please, install it."
+	msg_common_exiftool_not_found_text="Software \"Exiftool\" was not found! Please install it."
 	msg_common_jhead_not_found_text="Software \"Jhead\" was not found! Please install it."
 	msg_common_webp_not_found_text="Software \"WebP\" was not found! Please install it."
 	msg_common_action_not_found_text="The requested action is not implemented."
@@ -157,6 +158,7 @@ load_language_it () {
 	# msg_common_mogrify_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_convert_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_montage_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
+	msg_common_exiftool_not_found_text="Il software \"Exiftool\" non è stato trovato! Per favore installalo."
 	msg_common_jhead_not_found_text="Il software \"Jhead\" non è stato trovato! Per favore installalo."
 	msg_common_webp_not_found_text="Il software \"WebP\" non è stato trovato! Per favore installalo."
 	msg_common_action_not_found_text="L'azione richiesta non è implementata."
@@ -1364,6 +1366,10 @@ magick_bin=$(which magick)
 # montage_bin=$(which montage)
 # [ -z "${montage_bin}" ] && \
 # 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
+
+exiftool_bin=$(which exiftool)
+[ -z "${exiftool_bin}" ] && \
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_exiftool_not_found_text}" && exit 2
 
 jhead_bin=$(which jhead)
 [ -z "${jhead_bin}" ] && \
