@@ -47,6 +47,7 @@ This Service Menu adds many image-related actions to Dolphin, such as:
   - Delete IPTC section
   - Delete XMP section
   - Strip all unnecessary data
+  - Strip all metadata
   - Add timestamp from Exif
 
 - Tools
