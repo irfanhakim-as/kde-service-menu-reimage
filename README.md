@@ -11,6 +11,7 @@ This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde
 > [!NOTE]  
 > Most of these packages should already be installed by default, install those required that are missing.
 
+- `qtpaths` (Only required for installation/uninstallation)
 - `bash`
 - `dolphin`
 - `imagemagick`
