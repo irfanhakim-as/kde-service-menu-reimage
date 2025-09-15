@@ -80,19 +80,19 @@ Follow these steps to install or update the program for a single user or system-
 
 4. Install using the provided installer script.
 
-    To install the program for a single user, simply run the script as is:
+   - To install the program for a single user, simply run the script as is:
 
-    ```sh
-    ./install.sh
-    ```
+      ```sh
+      ./install.sh
+      ```
 
-    By default, this will install the program to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
+      By default, this will install the program to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
 
-    **Alternatively**, to install the program system-wide, run the script with `sudo`:
+   - **Alternatively**, to install the program system-wide, run the script with `sudo`:
 
-    ```sh
-    sudo ./install.sh
-    ```
+      ```sh
+      sudo ./install.sh
+      ```
 
 ## Uninstallation
 
