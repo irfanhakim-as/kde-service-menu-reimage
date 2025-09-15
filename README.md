@@ -14,8 +14,8 @@ This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde
 - `bash`
 - `dolphin`
 - `imagemagick`
-- `jhead` (Optional - required by metadata actions)
 - `kdialog`
+- `exiftool` (Optional - required by metadata actions)
 
 ## Features
 
