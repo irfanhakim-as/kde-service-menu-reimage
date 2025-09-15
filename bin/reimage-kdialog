@@ -96,6 +96,7 @@ load_language_en_US () {
 	msg_shadow_finish_title="Drop shadow to \"${name}\""
 
 	msg_timestamp_title="Add timestamp"
+	msg_timestamp_no_metadata="Is it possible that the image does not contain metadata."
 	msg_timestamp_finish_title="Add timestamp to \"${name}\""
 
 	msg_transparent2color_title="Changing transparence to color"
@@ -218,6 +219,7 @@ load_language_it () {
 	msg_shadow_finish_title="Aggiungi ombra a \"${name}\""
 
 	msg_timestamp_title="Aggiungi timestamp"
+	msg_timestamp_no_metadata="È possibile che l'immagine non contenga metadati."
 	msg_timestamp_finish_title="Aggiungi timestamp a \"${name}\""
 
 	msg_transparent2color_title="Cambio della trasparenza a colore"
@@ -821,6 +823,7 @@ run_shadow () {
 run_timestamp () {
 	local timestamp=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
 	# timestamp=$("${jhead_bin}" -exifmap "${input}" | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
+	[ -z "${timestamp}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
 
 	if [ "${overwrite}" = true ]; then
 		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
