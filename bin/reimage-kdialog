@@ -1249,7 +1249,7 @@ set_rfe () {
 
 ## rename file with file's datetime
 set_rff () {
-	ask_overwrite=true
+	# ask_overwrite=true
 	manage_input_separately "${@}"
 }
 
