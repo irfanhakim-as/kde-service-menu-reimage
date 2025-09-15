@@ -142,8 +142,8 @@ load_language_en_US () {
 	msg_di_title="Delete IPTC section"
 	msg_di_finish_title="Delete IPTC section from \"${name}\""
 
-	msg_dx_title="Deletex XMP section"
-	msg_dx_finish_title="Deletex XMP section from \"${name}\""
+	msg_dx_title="Delete XMP section"
+	msg_dx_finish_title="Delete XMP section from \"${name}\""
 
 	msg_purejpg_title="Strip all unnecessary data"
 	msg_purejpg_finish_title="Strip all unnecessary data from \"${name}\""
