@@ -830,7 +830,7 @@ run_shadow () {
 }
 
 run_timestamp () {
-	local timestamp=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	local timestamp=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
 	# timestamp=$("${jhead_bin}" -exifmap "${input}" | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
 	[ -z "${timestamp}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
 
@@ -857,11 +857,11 @@ run_transparent2color () {
 
 ## rename file with Exif datetime
 run_rfe () {
-	local datetime=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	local datetime=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
 	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
 
 	# rename file according to exif datetime with original extension and format code in case of filename collision
-	msg=$(exiftool -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<DateTimeOriginal" -q "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<DateTimeOriginal" -q "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -exonly -q -nf%Y-%m-%d_%H%M%S -ft "${input}" 2>&1)
 	# code=$?
 	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
@@ -872,7 +872,7 @@ run_rfe () {
 ## rename file with file's datetime
 run_rff () {
 	# rename file according to file datetime with original extension and format code in case of filename collision
-	msg=$(exiftool -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<FileModifyDate" -q "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<FileModifyDate" -q "${input}" 2>&1)
 	return $?
 	# DATE=$(date -r "${input}" +%Y-%m-%d_%H%M%S)
 
@@ -892,10 +892,10 @@ run_rff () {
 
 ## set file's datetime from Exif date
 run_sffe () {
-	local datetime=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	local datetime=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
 	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
 
-	msg=$(exiftool "-FileModifyDate=${datetime}" -q "${input}" 2>&1)
+	msg=$("${exiftool_bin}" "-FileModifyDate=${datetime}" -q "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
 	# code=$?
 	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
@@ -918,7 +918,7 @@ run_sffn () {
 ## set Exif datetime from file's date
 run_seff () {
 	# updating metadata creates a new file so overwriting and preserving file modification timestamp are needed
-	msg=$(exiftool -overwrite_original -preserve "-DateTimeOriginal<FileModifyDate" "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" -q "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve "-DateTimeOriginal<FileModifyDate" "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" -q "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -dsft "${input}" 2>&1)
 	return $?
 }
@@ -929,21 +929,21 @@ run_sefn () {
 		{ "${kdialog_bin}" --title "${!msg_title}" --icon configure --error "${msg_common_name_error}" && qdbus $dbus_ref close && exit 2; }
 	local DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1:\2:\3-\4:\5:\6/")
 
-	msg=$(exiftool -overwrite_original -preserve "-DateTimeOriginal=${DATE}" "-CreateDate=${DATE}" "-ModifyDate=${DATE}" -q "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve "-DateTimeOriginal=${DATE}" "-CreateDate=${DATE}" "-ModifyDate=${DATE}" -q "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -ts$DATE "${input}" 2>&1)
 	return $?
 }
 
 ## Add comment
 run_ac () {
-	msg=$(exiftool -overwrite_original -preserve -UserComment="${comment}" "${input}" 2>&1) # adds comment as exif's UserComment tag
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -UserComment="${comment}" "${input}" 2>&1) # adds comment as exif's UserComment tag
 	# msg=$("${jhead_bin}" -q -cl "${comment}" "${input}" 2>&1) # adds comment as jpeg's Comment tag
 	return $?
 }
 
 ## Viwe metadata
 run_ve () {
-	msg=$(exiftool -S "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -S "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
 	$kdialog_bin --msgbox "${msg}"
 	code=$?
@@ -953,7 +953,7 @@ run_ve () {
 
 ## Extract metadata to file
 run_ee () {
-	msg=$(exiftool -s "${input}" > "${input%.*}.txt" 2>&1)
+	msg=$("${exiftool_bin}" -s "${input}" > "${input%.*}.txt" 2>&1)
 	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" > "${dir}/${base}.txt" 2>&1)
 	return $?
 }
@@ -961,42 +961,42 @@ run_ee () {
 ## Delete comment field
 run_dc () {
 	# deletes both exif's UserComment and jpeg's Comment tags from image
-	msg=$(exiftool -overwrite_original -preserve -UserComment= -Comment= "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -UserComment= -Comment= "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -dc "${input}" 2>&1)
 	return $?
 }
 
 ## Strip Exif section
 run_de () {
-	msg=$(exiftool -overwrite_original -preserve -EXIF:All= "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -EXIF:All= "${input}" 2>&1)
 	# msg=$("${jhead_bin}" -q -de "${input}" 2>&1)
 	return $?
 }
 
 ## Delete IPTC section
 run_di () {
-	msg=$(exiftool -overwrite_original -preserve -IPTC:All= "${input}" 2>&1) # removes iptc tags
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -IPTC:All= "${input}" 2>&1) # removes iptc tags
 	# msg=$("${jhead_bin}" -q -di "${input}" 2>&1) # removes iptc, photoshop, and jfif tags
 	return $?
 }
 
 ## Delete XMP section
 run_dx () {
-	msg=$(exiftool -overwrite_original -preserve -XMP:All= "${input}" 2>&1) # removes xmp tags
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -XMP:All= "${input}" 2>&1) # removes xmp tags
 	# msg=$("${jhead_bin}" -q -dx "${input}" 2>&1) # removes xmp and jfif tags
 	return $?
 }
 
 ## Strip all unnecessary data
 run_purejpg () {
-	msg=$(exiftool -overwrite_original -preserve -all= -tagsFromFile @ -Orientation -ICC_Profile "${input}" 2>&1) # removes all metadata except orientation and icc color profiles
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -all= -tagsFromFile @ -Orientation -ICC_Profile "${input}" 2>&1) # removes all metadata except orientation and icc color profiles
 	# msg=$("${jhead_bin}" -q -purejpg "${input}" 2>&1) # removes all metadata
 	return $?
 }
 
 ## Strip all metadata
 run_stripall () {
-	msg=$(exiftool -overwrite_original -preserve -all= "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -all= "${input}" 2>&1)
 	return $?
 }
 
