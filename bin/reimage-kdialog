@@ -848,10 +848,16 @@ run_transparent2color () {
 
 ## rename file with Exif datetime
 run_rfe () {
-	msg=$("${jhead_bin}" -exonly -q -nf%Y-%m-%d_%H%M%S -ft "${input}" 2>&1)
-	code=$?
-	[ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
-	return $code
+	local datetime=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
+
+	# rename file according to exif datetime with original extension and format code in case of filename collision
+	msg=$(exiftool -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<DateTimeOriginal" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -exonly -q -nf%Y-%m-%d_%H%M%S -ft "${input}" 2>&1)
+	# code=$?
+	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
+	# return $code
+	return $?
 }
 
 ## rename file with file's datetime
@@ -874,10 +880,15 @@ run_rff () {
 
 ## set file's datetime from Exif date
 run_sffe () {
-	msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
-	code=$?
-	[ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
-	return $code
+	local datetime=$(exiftool -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
+
+	msg=$(exiftool "-FileModifyDate=${datetime}" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
+	# code=$?
+	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
+	# return $code
+	return $?
 }
 
 ## set file's datetime from file's name
