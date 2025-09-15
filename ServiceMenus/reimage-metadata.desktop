@@ -119,7 +119,7 @@ Name[it]=Cancella le informazioni XMP
 Exec=reimage-kdialog purejpg %F
 Icon=knotes_date
 Name=Strip all unnecessary data
-Name[it]=Cancella tutti i metadati
+Name[it]=Cancella medatati non necessari
 
 ################################################################################
 
