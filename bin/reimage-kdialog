@@ -97,21 +97,21 @@ load_language_en_US () {
 	msg_shadow_finish_title="Drop shadow to \"${name}\""
 
 	msg_timestamp_title="Add timestamp"
-	msg_timestamp_no_metadata="Is it possible that the image does not contain metadata."
+	msg_timestamp_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_timestamp_finish_title="Add timestamp to \"${name}\""
 
 	msg_transparent2color_title="Changing transparence to color"
 	msg_transparent2color_finish_title="Changing transparence to color of \"${name}\""
 
 	msg_rfe_title="Rename file from Exif metadata"
-	msg_rfe_no_metadata="Is it possible that the image does not contain metadata."
+	msg_rfe_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_rfe_finish_title="Rename file \"${name}\""
 
 	msg_rff_title="Rename file from file's date"
 	msg_rff_finish_title="Rename file \"${name}\""
 
 	msg_sffe_title="Setting file date from Exif Metadata"
-	msg_sffe_no_metadata="Is it possible that the image does not contain metadata."
+	msg_sffe_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_sffe_finish_title="Setting date of \"${name}\""
 
 	msg_sffn_title="Setting file date from file name"
@@ -224,21 +224,21 @@ load_language_it () {
 	msg_shadow_finish_title="Aggiungi ombra a \"${name}\""
 
 	msg_timestamp_title="Aggiungi timestamp"
-	msg_timestamp_no_metadata="È possibile che l'immagine non contenga metadati."
+	msg_timestamp_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_timestamp_finish_title="Aggiungi timestamp a \"${name}\""
 
 	msg_transparent2color_title="Cambio della trasparenza a colore"
 	msg_transparent2color_finish_title="Cambio della trasparenza a colore di \"${name}\""
 
 	msg_rfe_title="Rinomina file con la data Exif"
-	msg_rfe_no_metadata="È possibile che l'immagine non contenga metadati."
+	msg_rfe_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_rfe_finish_title="Rinomina file \"${name}\""
 
 	msg_rff_title="Rinomina file con la data del file"
 	msg_rff_finish_title="Rinomina file \"${name}\""
 
 	msg_sffe_title="Cambiamento data del file con la data Exif"
-	msg_sffe_no_metadata="È possibile che l'immagine non contenga metadati."
+	msg_sffe_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_sffe_finish_title="Cambiamento data di \"${name}\""
 
 	msg_sffn_title="Cambiamento data del file dal nome"
