@@ -28,5 +28,5 @@ package() {
     install -m 755 -p "${srcdir}"/ServiceMenus/*.desktop "${pkgdir}${servicemenu_dir}" && \
     # install documentation files
     install -d "${pkgdir}${doc_dir}" && \
-    install -m 644 -p "${srcdir}"/doc/* "${pkgdir}${doc_dir}"
+    install -m 644 -p "${srcdir}"/doc/* "${pkgdir}${doc_dir}/"
 }

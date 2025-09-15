@@ -56,7 +56,7 @@ install -d "${servicemenu_dir}" && \
 install -m 755 -p ServiceMenus/*.desktop "${servicemenu_dir}" && \
 # install documentation files
 install -d "${doc_dir}" && \
-install -m 644 -p doc/* "${doc_dir}"
+install -m 644 -p doc/* "${doc_dir}/"
 
 # report installation result
 if [ ${?} -eq 0 ]; then
