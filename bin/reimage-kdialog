@@ -269,7 +269,7 @@ load_language_it () {
 	msg_di_title="Svuota i metadati IPTC"
 	msg_di_finish_title="Svuota i metadati IPTC da \"${name}\""
 
-	msg_dx_title="Svuota i metadati  XMP"
+	msg_dx_title="Svuota i metadati XMP"
 	msg_dx_finish_title="Svuota i metadati XMP da \"${name}\""
 
 	msg_purejpg_title="Elimina medatati non necessari"
@@ -306,7 +306,7 @@ help () {
 	echo "convert		change format (value: all formats supported by ImageMagick"
 	echo "optimize	Advance auto-optimization for web (no value request)"
 	echo "overturn	overturn image (value: flip, flop)"
-	echo "resize		resize image (value in percent  or XxY)"
+	echo "resize		resize image (value in percent or XxY)"
 	echo "rotate		rotate image (value is angle of rotation)"
 	echo "sepia		sepia filter to image (value is percent of used filter)"
 	echo
@@ -1014,8 +1014,8 @@ manage_input_separately () {
 	[ ${#} -lt 1 ] && help
 	[ ${#} -gt 1 ] && multiple_files=true
 
-    # update messages with presently available vars
-    load_language
+	# update messages with presently available vars
+	load_language
 
 	type run_${action} > /dev/null || \
 		{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_action_not_found_text}" && exit 2; }
