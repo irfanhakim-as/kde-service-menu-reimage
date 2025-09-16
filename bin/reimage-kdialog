@@ -1375,9 +1375,9 @@ exiftool_bin=$(which exiftool)
 # [ -z "${jhead_bin}" ] && \
 # 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_jhead_not_found_text}" && exit 2
 
-webp_bin=$(which webpinfo)
-[ -z "${webp_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
+# webp_bin=$(which webpinfo)
+# [ -z "${webp_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
 
 action="${1}"
 shift
