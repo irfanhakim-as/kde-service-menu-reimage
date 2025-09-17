@@ -1,4 +1,4 @@
-# Maintainer: Irfan Hakim <irfanhakim.as@yahoo.com>
+# Maintainer: Irfan Hakim <irfanhakim dot as at yahoo dot com>
 pkgname='kf6-servicemenus-reimage'
 pkgver=2.6.0
 pkgrel=2
