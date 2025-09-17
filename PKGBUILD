@@ -1,7 +1,7 @@
 # Maintainer: Irfan Hakim <irfanhakim dot as at yahoo dot com>
 pkgname='kf6-servicemenus-reimage'
-pkgver=2.6.0
-pkgrel=2
+pkgver=2.7.0
+pkgrel=1
 pkgdesc="Manipulate images e their metadata"
 arch=('any')
 url="https://github.com/irfanhakim-as/kde-service-menu-reimage"
@@ -13,7 +13,7 @@ provides=()
 conflicts=('kde-service-menu-reimage' 'kde-service-menu-reimage-mod')
 replaces=()
 source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_${arch[0]}.tar.gz")
-md5sums=('acc6ec84363579911b366e62ff79bb22')
+md5sums=('17244c6296639bc4a8299e23c51109a9')
 
 package() {
     # determine installation paths
