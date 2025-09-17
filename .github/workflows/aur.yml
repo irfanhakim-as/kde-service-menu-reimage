@@ -102,7 +102,7 @@ jobs:
           git config --local user.email "${REMOTE_REPO_EMAIL:-github-actions[bot]@users.noreply.github.com}"
 
           # commit changes
-          git commit -m "Update to ${version}-${pkgrel}"
+          git commit -m "Update to ${version}-${release}"
 
           # push commit
           git push -u origin HEAD
