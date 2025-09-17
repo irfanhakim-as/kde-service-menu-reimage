@@ -14,9 +14,9 @@ This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde
 - `qtpaths` (Only required for installation/uninstallation)
 - `bash`
 - `dolphin`
+- `exiftool`
 - `imagemagick`
 - `kdialog`
-- **(Optional)** `exiftool` (Only required for metadata-related actions)
 
 ## Features
 
