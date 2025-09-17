@@ -91,6 +91,7 @@ jobs:
         run: |
           # set variables
           source PKGBUILD
+          name="${pkgname}"
           version="${pkgver}"
           release="${pkgrel}"
 
@@ -102,7 +103,7 @@ jobs:
           git config --local user.email "${REMOTE_REPO_EMAIL:-github-actions[bot]@users.noreply.github.com}"
 
           # commit changes
-          git commit -m "Update to ${version}-${release}"
+          git commit -m "Update ${name} to ${version}-${release}"
 
           # push commit
           git push -u origin HEAD
