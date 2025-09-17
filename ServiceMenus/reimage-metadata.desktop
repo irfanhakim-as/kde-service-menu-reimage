@@ -18,10 +18,10 @@
 #
 
 [Desktop Entry]
-Actions=rfe;rff;_SEPARATOR_;sffe;sffn;_SEPARATOR_;seff;sefn;_SEPARATOR_;add_comment;view_metadata;extract_metadata;_SEPARATOR_;del_comment;del_exif;del_iptc;del_xmp;del_all;_SEPARATOR_;tfe;
-MimeType=image/jpeg;image/tiff;
+Actions=rfe;rff;_SEPARATOR_;sffe;sffn;_SEPARATOR_;seff;sefn;_SEPARATOR_;add_comment;view_metadata;extract_metadata;_SEPARATOR_;del_comment;del_exif;del_iptc;del_xmp;del_some;del_all;_SEPARATOR_;tfe;
+MimeType=image/jpeg;image/tiff;image/heic;
 Name=ReImage metadata service menu
-ServiceTypes=KonqPopupMenu/Plugin,image/jpeg,image/tiff
+ServiceTypes=KonqPopupMenu/Plugin,image/jpeg,image/tiff,image/heic
 TryExec=reimage-kdialog
 Type=Service
 X-KDE-Submenu=ReImage - Metadata
@@ -115,10 +115,16 @@ Icon=knotes_date
 Name=Delete XMP section
 Name[it]=Cancella le informazioni XMP
 
-[Desktop Action del_all]
+[Desktop Action del_some]
 Exec=reimage-kdialog purejpg %F
 Icon=knotes_date
 Name=Strip all unnecessary data
+Name[it]=Cancella medatati non necessari
+
+[Desktop Action del_all]
+Exec=reimage-kdialog stripall %F
+Icon=knotes_date
+Name=Strip all metadata
 Name[it]=Cancella tutti i metadati
 
 ################################################################################

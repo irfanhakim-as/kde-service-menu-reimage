@@ -78,8 +78,14 @@ jobs:
             echo "No changes have been made to the package files."
             exists=false
           else
-            echo "Package files have been updated and are pending commit."
-            exists=true
+            # check if pkgname, pkgver, or pkgrel changed
+            if git diff --cached | grep -E "^[+-](pkgname|pkgver|pkgrel)="; then
+              echo "Package files have been updated and are pending commit."
+              exists=true
+            else
+              echo "WARN: Package version and release number unchanged, skipping push."
+              exists=false
+            fi
           fi
 
           # export result to output
@@ -91,6 +97,7 @@ jobs:
         run: |
           # set variables
           source PKGBUILD
+          name="${pkgname}"
           version="${pkgver}"
           release="${pkgrel}"
 
@@ -102,7 +109,7 @@ jobs:
           git config --local user.email "${REMOTE_REPO_EMAIL:-github-actions[bot]@users.noreply.github.com}"
 
           # commit changes
-          git commit -m "Update to ${version}-${pkgrel}"
+          git commit -m "Update ${name} to ${version}-${release}"
 
           # push commit
           git push -u origin HEAD

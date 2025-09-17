@@ -31,8 +31,9 @@ load_language_en_US () {
 	# msg_common_mogrify_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_convert_not_found_text="Software ImageMagick not found! Please, install it."
 	# msg_common_montage_not_found_text="Software ImageMagick not found! Please, install it."
-	msg_common_jhead_not_found_text="Software \"Jhead\" was not found! Please install it."
-	msg_common_webp_not_found_text="Software \"WebP\" was not found! Please install it."
+	msg_common_exiftool_not_found_text="Software \"Exiftool\" was not found! Please install it."
+	# msg_common_jhead_not_found_text="Software \"Jhead\" was not found! Please install it."
+	# msg_common_webp_not_found_text="Software \"WebP\" was not found! Please install it."
 	msg_common_action_not_found_text="The requested action is not implemented."
 	msg_common_overwrite_text="In case the images to be saved have the same name as those to be processed,${new_line}do you want to overwrite them?"
 	msg_common_abort="Operation interrupted by the user."
@@ -96,20 +97,21 @@ load_language_en_US () {
 	msg_shadow_finish_title="Drop shadow to \"${name}\""
 
 	msg_timestamp_title="Add timestamp"
+	msg_timestamp_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_timestamp_finish_title="Add timestamp to \"${name}\""
 
 	msg_transparent2color_title="Changing transparence to color"
 	msg_transparent2color_finish_title="Changing transparence to color of \"${name}\""
 
 	msg_rfe_title="Rename file from Exif metadata"
-	msg_rfe_no_metadata="Is it possible that the image does not contain metadata."
+	msg_rfe_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_rfe_finish_title="Rename file \"${name}\""
 
 	msg_rff_title="Rename file from file's date"
 	msg_rff_finish_title="Rename file \"${name}\""
 
 	msg_sffe_title="Setting file date from Exif Metadata"
-	msg_sffe_no_metadata="Is it possible that the image does not contain metadata."
+	msg_sffe_no_metadata="It is possible that the image \"${name}\" does not contain the required metadata."
 	msg_sffe_finish_title="Setting date of \"${name}\""
 
 	msg_sffn_title="Setting file date from file name"
@@ -140,11 +142,14 @@ load_language_en_US () {
 	msg_di_title="Delete IPTC section"
 	msg_di_finish_title="Delete IPTC section from \"${name}\""
 
-	msg_dx_title="Deletex XMP section"
-	msg_dx_finish_title="Deletex XMP section from \"${name}\""
+	msg_dx_title="Delete XMP section"
+	msg_dx_finish_title="Delete XMP section from \"${name}\""
 
 	msg_purejpg_title="Strip all unnecessary data"
 	msg_purejpg_finish_title="Strip all unnecessary data from \"${name}\""
+
+	msg_stripall_title="Strip all metadata"
+	msg_stripall_finish_title="Strip all metadata from \"${name}\""
 }
 
 load_language_it () {
@@ -153,8 +158,9 @@ load_language_it () {
 	# msg_common_mogrify_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_convert_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
 	# msg_common_montage_not_found_text="Il software ImageMagick non è stato trovato! Per favore, installalo."
-	msg_common_jhead_not_found_text="Il software \"Jhead\" non è stato trovato! Per favore installalo."
-	msg_common_webp_not_found_text="Il software \"WebP\" non è stato trovato! Per favore installalo."
+	msg_common_exiftool_not_found_text="Il software \"Exiftool\" non è stato trovato! Per favore installalo."
+	# msg_common_jhead_not_found_text="Il software \"Jhead\" non è stato trovato! Per favore installalo."
+	# msg_common_webp_not_found_text="Il software \"WebP\" non è stato trovato! Per favore installalo."
 	msg_common_action_not_found_text="L'azione richiesta non è implementata."
 	msg_common_overwrite_text="Nel caso che le immagini da salvare abbiano lo stesso nome di quelle da elaborare,${new_line}vuoi sovrascriverle?"
 	msg_common_abort="Operazione interrotta dall'utente."
@@ -218,20 +224,21 @@ load_language_it () {
 	msg_shadow_finish_title="Aggiungi ombra a \"${name}\""
 
 	msg_timestamp_title="Aggiungi timestamp"
+	msg_timestamp_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_timestamp_finish_title="Aggiungi timestamp a \"${name}\""
 
 	msg_transparent2color_title="Cambio della trasparenza a colore"
 	msg_transparent2color_finish_title="Cambio della trasparenza a colore di \"${name}\""
 
 	msg_rfe_title="Rinomina file con la data Exif"
-	msg_rfe_no_metadata="È possibile che l'immagine non contenga metadati."
+	msg_rfe_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_rfe_finish_title="Rinomina file \"${name}\""
 
 	msg_rff_title="Rinomina file con la data del file"
 	msg_rff_finish_title="Rinomina file \"${name}\""
 
 	msg_sffe_title="Cambiamento data del file con la data Exif"
-	msg_sffe_no_metadata="È possibile che l'immagine non contenga metadati."
+	msg_sffe_no_metadata="L'immagine \"${name}\" potrebbe non contenere i metadati richiesti."
 	msg_sffe_finish_title="Cambiamento data di \"${name}\""
 
 	msg_sffn_title="Cambiamento data del file dal nome"
@@ -262,11 +269,14 @@ load_language_it () {
 	msg_di_title="Svuota i metadati IPTC"
 	msg_di_finish_title="Svuota i metadati IPTC da \"${name}\""
 
-	msg_dx_title="Svuota i metadati  XMP"
+	msg_dx_title="Svuota i metadati XMP"
 	msg_dx_finish_title="Svuota i metadati XMP da \"${name}\""
 
 	msg_purejpg_title="Elimina medatati non necessari"
 	msg_purejpg_finish_title="Elimina medatati non necessari da \"${name}\""
+
+	msg_stripall_title="Elimina tutti i metadati"
+	msg_stripall_finish_title="Elimina tutti i metadati da \"${name}\""
 }
 
 load_language () {
@@ -296,7 +306,7 @@ help () {
 	echo "convert		change format (value: all formats supported by ImageMagick"
 	echo "optimize	Advance auto-optimization for web (no value request)"
 	echo "overturn	overturn image (value: flip, flop)"
-	echo "resize		resize image (value in percent  or XxY)"
+	echo "resize		resize image (value in percent or XxY)"
 	echo "rotate		rotate image (value is angle of rotation)"
 	echo "sepia		sepia filter to image (value is percent of used filter)"
 	echo
@@ -314,7 +324,8 @@ help () {
 	echo "de		Strip Exif section"
 	echo "di		Delete IPTC section"
 	echo "dx		Delete XMP section"
-	echo "purejpeg	Strip all unnecessary data"
+	echo "purejpg	Strip all unnecessary data"
+	echo "stripall	Strip all metadata"
 	echo
 	echo
 	echo "Examples:"
@@ -819,7 +830,9 @@ run_shadow () {
 }
 
 run_timestamp () {
-	timestamp=$("${jhead_bin}" -exifmap 01.jpg | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
+	local timestamp=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	# timestamp=$("${jhead_bin}" -exifmap "${input}" | grep "Date/Time" | sed "s/^[^:]*:[[:blank:]]*\([[:digit:]]\{4\}\):\([[:digit:]]\{2\}\):\([[:digit:]]\{2\}\)/\1-\2-\3/")
+	[ -z "${timestamp}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
 
 	if [ "${overwrite}" = true ]; then
 		msg=$("${magick_bin}" "${input}" -gravity SouthEast -pointsize 30 -fill white -annotate +30+30 "${timestamp}" "${input}" 2>&1)
@@ -844,46 +857,59 @@ run_transparent2color () {
 
 ## rename file with Exif datetime
 run_rfe () {
-	msg=$("${jhead_bin}" -exonly -q -nf%Y-%m-%d_%H%M%S -ft "${input}" 2>&1)
-	code=$?
-	[ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
-	return $code
+	local datetime=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
+
+	# rename file according to exif datetime with original extension and format code in case of filename collision
+	msg=$("${exiftool_bin}" -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<DateTimeOriginal" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -exonly -q -nf%Y-%m-%d_%H%M%S -ft "${input}" 2>&1)
+	# code=$?
+	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
+	# return $code
+	return $?
 }
 
 ## rename file with file's datetime
 run_rff () {
-	DATE=$(date -r "${input}" +%Y-%m-%d_%H%M%S)
+	# rename file according to file datetime with original extension and format code in case of filename collision
+	msg=$("${exiftool_bin}" -dateFormat "%Y-%m-%d_%H%M%S%%+c.%%e" "-filename<FileModifyDate" -q "${input}" 2>&1)
+	return $?
+	# DATE=$(date -r "${input}" +%Y-%m-%d_%H%M%S)
 
-	if [ "${overwrite}" = true ]; then
-		[ "${dir}/${name}" = "${dir}/${DATE}.${ext}" ] && return 0
+	# if [ "${overwrite}" = true ]; then
+	# 	[ "${dir}/${name}" = "${dir}/${DATE}.${ext}" ] && return 0
 
-		msg=$(mv "${dir}/${name}" "${dir}/${DATE}.${ext}" 2>&1)
-		return $?
-	else
-		destination_dir="renamed"
-		msg=$(mkdir -p "${destination_dir}" 2>&1 && cp "${dir}/${name}" "${dir}/${destination_dir}/${DATE}.${ext}" 2>&1)
-		return $?
-	fi
+	# 	msg=$(mv "${dir}/${name}" "${dir}/${DATE}.${ext}" 2>&1)
+	# 	return $?
+	# else
+	# 	destination_dir="renamed"
+	# 	msg=$(mkdir -p "${destination_dir}" 2>&1 && cp "${dir}/${name}" "${dir}/${destination_dir}/${DATE}.${ext}" 2>&1)
+	# 	return $?
+	# fi
 }
 
 ########################################
 
 ## set file's datetime from Exif date
 run_sffe () {
-	custom_msg=msg_${action}_no_metadata
-	msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
-	code=$?
-	[ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
-	return $code
+	local datetime=$("${exiftool_bin}" -s3 -DateTimeOriginal "${input}" 2>/dev/null)
+	[ -z "${datetime}" ] && msg=msg_${action}_no_metadata && msg="${!msg}" && return 1
+
+	msg=$("${exiftool_bin}" "-FileModifyDate=${datetime}" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -exonly -q -ft "${input}" 2>&1)
+	# code=$?
+	# [ -z "${msg}" ] && msg=msg_${action}_no_metadata && msg="${!msg}"
+	# return $code
+	return $?
 }
 
 ## set file's datetime from file's name
 run_sffn () {
 	echo "${input}" | egrep -q "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}_[[:digit:]]{6}" || \
 		{ "${kdialog_bin}" --title "${!msg_title}" --icon configure --error "${msg_common_name_error}" && qdbus $dbus_ref close && exit 2; }
-	DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1\2\3\4\5.\6/")
+	local DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1\2\3\4\5.\6/")
 
-	msg=$(touch -t $DATE "${input}" 2>&1)
+	msg=$(touch -t "${DATE}" "${input}" 2>&1)
 	return $?
 }
 
@@ -891,7 +917,9 @@ run_sffn () {
 
 ## set Exif datetime from file's date
 run_seff () {
-	msg=$("${jhead_bin}" -q -dsft "${input}" 2>&1)
+	# updating metadata creates a new file so overwriting and preserving file modification timestamp are needed
+	msg=$("${exiftool_bin}" -overwrite_original -preserve "-DateTimeOriginal<FileModifyDate" "-CreateDate<FileModifyDate" "-ModifyDate<FileModifyDate" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -dsft "${input}" 2>&1)
 	return $?
 }
 
@@ -899,58 +927,76 @@ run_seff () {
 run_sefn () {
 	echo "${input}" | egrep -q "[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}_[[:digit:]]{6}" || \
 		{ "${kdialog_bin}" --title "${!msg_title}" --icon configure --error "${msg_common_name_error}" && qdbus $dbus_ref close && exit 2; }
-	DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1:\2:\3-\4:\5:\6/")
+	local DATE=$(echo "${input}" | sed "s/.*\([[:digit:]]\{4\}\)-\([[:digit:]]\{2\}\)-\([[:digit:]]\{2\}\)_\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\)\([[:digit:]]\{2\}\).*/\1:\2:\3-\4:\5:\6/")
 
-	msg=$("${jhead_bin}" -q -ts$DATE "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve "-DateTimeOriginal=${DATE}" "-CreateDate=${DATE}" "-ModifyDate=${DATE}" -q "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -ts$DATE "${input}" 2>&1)
 	return $?
 }
 
 ## Add comment
 run_ac () {
-	msg=$("${jhead_bin}" -q -cl "${comment}" "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -UserComment="${comment}" "${input}" 2>&1) # adds comment as exif's UserComment tag
+	# msg=$("${jhead_bin}" -q -cl "${comment}" "${input}" 2>&1) # adds comment as jpeg's Comment tag
 	return $?
 }
 
 ## Viwe metadata
 run_ve () {
-	msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
+	msg=$("${exiftool_bin}" -S "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" 2>&1)
 	$kdialog_bin --msgbox "${msg}"
-	return $?
+	code=$?
+	[ "${code}" -eq 2 ] && return 0 # suppress error when dialog is closed
+	return "${code}"
 }
 
 ## Extract metadata to file
 run_ee () {
- 	msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" > "${dir}/${base}.txt" 2>&1)
+	msg=$("${exiftool_bin}" -s "${input}" > "${input%.*}.txt" 2>&1)
+	# msg=$("${jhead_bin}" -q -exifmap "${input}" | grep -v "^Map" > "${dir}/${base}.txt" 2>&1)
 	return $?
 }
 
 ## Delete comment field
 run_dc () {
-	msg=$("${jhead_bin}" -q -dc "${input}" 2>&1)
+	# deletes both exif's UserComment and jpeg's Comment tags from image
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -UserComment= -Comment= "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -dc "${input}" 2>&1)
 	return $?
 }
 
 ## Strip Exif section
 run_de () {
-	msg=$("${jhead_bin}" -q -de "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -EXIF:All= "${input}" 2>&1)
+	# msg=$("${jhead_bin}" -q -de "${input}" 2>&1)
 	return $?
 }
 
 ## Delete IPTC section
 run_di () {
-	msg=$("${jhead_bin}" -q -di "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -IPTC:All= "${input}" 2>&1) # removes iptc tags
+	# msg=$("${jhead_bin}" -q -di "${input}" 2>&1) # removes iptc, photoshop, and jfif tags
 	return $?
 }
 
 ## Delete XMP section
 run_dx () {
-	msg=$("${jhead_bin}" -q -dx "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -XMP:All= "${input}" 2>&1) # removes xmp tags
+	# msg=$("${jhead_bin}" -q -dx "${input}" 2>&1) # removes xmp and jfif tags
 	return $?
 }
 
 ## Strip all unnecessary data
 run_purejpg () {
-	msg=$("${jhead_bin}" -q -purejpg "${input}" 2>&1)
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -all= -tagsFromFile @ -Orientation -ICC_Profile "${input}" 2>&1) # removes all metadata except orientation and icc color profiles
+	# msg=$("${jhead_bin}" -q -purejpg "${input}" 2>&1) # removes all metadata
+	return $?
+}
+
+## Strip all metadata
+run_stripall () {
+	msg=$("${exiftool_bin}" -overwrite_original -preserve -all= "${input}" 2>&1)
 	return $?
 }
 
@@ -968,8 +1014,8 @@ manage_input_separately () {
 	[ ${#} -lt 1 ] && help
 	[ ${#} -gt 1 ] && multiple_files=true
 
-    # update messages with presently available vars
-    load_language
+	# update messages with presently available vars
+	load_language
 
 	type run_${action} > /dev/null || \
 		{ "${kdialog_bin}" --title "${msg_common_software_not_found_title}" --icon configure --error "${msg_common_action_not_found_text}" && exit 2; }
@@ -1226,7 +1272,7 @@ set_rfe () {
 
 ## rename file with file's datetime
 set_rff () {
-	ask_overwrite=true
+	# ask_overwrite=true
 	manage_input_separately "${@}"
 }
 
@@ -1293,6 +1339,11 @@ set_purejpg () {
 	manage_input_separately "${@}"
 }
 
+## Strip all metadata
+set_stripall () {
+	manage_input_separately "${@}"
+}
+
 ################################################################################
 
 [ "${1}" = "-h" ] || [ "${1}" = "--help" ] || [ ${#} -lt 2 ] && help
@@ -1316,13 +1367,17 @@ magick_bin=$(which magick)
 # [ -z "${montage_bin}" ] && \
 # 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_montage_not_found_text}" && exit 2
 
-jhead_bin=$(which jhead)
-[ -z "${jhead_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_jhead_not_found_text}" && exit 2
+exiftool_bin=$(which exiftool)
+[ -z "${exiftool_bin}" ] && \
+	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_exiftool_not_found_text}" && exit 2
 
-webp_bin=$(which webpinfo)
-[ -z "${webp_bin}" ] && \
-	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
+# jhead_bin=$(which jhead)
+# [ -z "${jhead_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_jhead_not_found_text}" && exit 2
+
+# webp_bin=$(which webpinfo)
+# [ -z "${webp_bin}" ] && \
+# 	"${kdialog_bin}" --icon configure --title "${msg_common_software_not_found_title}" --error "${msg_common_webp_not_found_text}" && exit 2
 
 action="${1}"
 shift

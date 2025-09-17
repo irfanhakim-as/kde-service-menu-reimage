@@ -1,4 +1,4 @@
-# Maintainer: Irfan Hakim <irfanhakim.as@yahoo.com>
+# Maintainer: Irfan Hakim <irfanhakim dot as at yahoo dot com>
 pkgname='kf6-servicemenus-reimage'
 pkgver=2.6.0
 pkgrel=2
@@ -6,9 +6,9 @@ pkgdesc="Manipulate images e their metadata"
 arch=('any')
 url="https://github.com/irfanhakim-as/kde-service-menu-reimage"
 license=('GPL-3.0+')
-depends=('dolphin' 'imagemagick' 'kdialog')
+depends=('dolphin' 'imagemagick' 'kdialog' 'perl-image-exiftool')
 makedepends=('qt5-tools')
-optdepends=('jhead: required for extracting exif data')
+optdepends=()
 provides=()
 conflicts=('kde-service-menu-reimage' 'kde-service-menu-reimage-mod')
 replaces=()
@@ -19,7 +19,7 @@ package() {
     # determine installation paths
     bin_dir="$(qtpaths --install-prefix)/bin"
     servicemenu_dir="$(qtpaths --locate-dirs GenericDataLocation kio/servicemenus | sed 's/.*://')"
-    doc_dir="$(qtpaths --install-prefix)/share/doc/kde-service-menu-reimage/"
+    doc_dir="$(qtpaths --install-prefix)/share/doc/kde-service-menu-reimage"
     # install required binaries
     install -d "${pkgdir}${bin_dir}" && \
     install -m 755 -p "${srcdir}"/bin/* "${pkgdir}${bin_dir}" && \
@@ -28,5 +28,5 @@ package() {
     install -m 755 -p "${srcdir}"/ServiceMenus/*.desktop "${pkgdir}${servicemenu_dir}" && \
     # install documentation files
     install -d "${pkgdir}${doc_dir}" && \
-    install -m 644 -p "${srcdir}"/doc/* "${pkgdir}${doc_dir}"
+    install -m 644 -p "${srcdir}"/doc/* "${pkgdir}${doc_dir}/"
 }

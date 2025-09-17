@@ -4,17 +4,18 @@
 
 ## About
 
-This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde.org/p/1231579) Dolphin Service Menu to KDE Plasma 6. This fork aims to stay as close as possible to the original while actively maintaining it by fixing bugs, adding (strictly necessary) new features and improving existing ones.
+This is an unofficial port of the [KDE 5 Service Menu ReImage](https://store.kde.org/p/1231579) Dolphin Service Menu to KDE Plasma 6. This fork aims to stay as close as possible to the original while actively maintaining it by fixing bugs, adding (strictly necessary) new features, and improving existing ones.
 
 ## Dependencies
 
 > [!NOTE]  
 > Most of these packages should already be installed by default, install those required that are missing.
 
+- `qtpaths` (Only required for installation/uninstallation)
 - `bash`
 - `dolphin`
+- `exiftool`
 - `imagemagick`
-- `jhead` (Optional - required by metadata actions)
 - `kdialog`
 
 ## Features
@@ -47,6 +48,7 @@ This Service Menu adds many image-related actions to Dolphin, such as:
   - Delete IPTC section
   - Delete XMP section
   - Strip all unnecessary data
+  - Strip all metadata
   - Add timestamp from Exif
 
 - Tools
@@ -78,19 +80,31 @@ Follow these steps to install or update the program for a single user or system-
 
 4. Install using the provided installer script.
 
-    To install the program for a single user, simply run the script as is:
+   - To install the program for a single user, simply run the script as is:
 
-    ```sh
-    ./install.sh
-    ```
+      ```sh
+      ./install.sh
+      ```
 
-    By default, this will install the program to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
+      By default, this will install the program to the `~/.local` prefix. Please ensure that the `~/.local/bin` directory is in your `PATH` environment variable.
 
-    **Alternatively**, to install the program system-wide, run the script with `sudo`:
+   - **Alternatively**, to install the program system-wide, run the script with `sudo`:
 
-    ```sh
-    sudo ./install.sh
-    ```
+      ```sh
+      sudo ./install.sh
+      ```
+
+   - Note that the installer script expects you to have the `qtpaths` command available in your `PATH` to make up some of the target installation paths. In case you do have `qtpaths` installed in your `PATH` but it is named differently (i.e. `qtpaths6`), or if it is installed outside of your `PATH` (i.e. `/usr/lib/qt6/bin/qtpaths`), please adjust the `qtpaths_bin` environment variable accordingly, prior to running the installer script:
+
+      ```sh
+      # to install for a single user
+      qtpaths_bin=/path/to/qtpaths ./install.sh
+
+      # to install system-wide
+      sudo qtpaths_bin=/path/to/qtpaths ./install.sh
+      ```
+
+      Replace `/path/to/qtpaths` with the name or full path to the `qtpaths` utility you have installed.
 
 ## Uninstallation
 
@@ -104,14 +118,26 @@ Follow these steps to uninstall the program:
 
 2. Uninstall using the provided uninstaller script:
 
-    If you have previously installed the program for a single user, simply run the script as is:
+   - If you have previously installed the program for a single user, simply run the script as is:
 
-    ```sh
-    ./uninstall.sh
-    ```
+      ```sh
+      ./uninstall.sh
+      ```
 
-    **Alternatively**, if you have installed the program system-wide, run the script with `sudo`:
+   - **Alternatively**, if you have installed the program system-wide, run the script with `sudo`:
 
-    ```sh
-    sudo ./uninstall.sh
-    ```
+      ```sh
+      sudo ./uninstall.sh
+      ```
+
+   - Note that the uninstaller script expects you to have the `qtpaths` command available in your `PATH` to make up some of the target installation paths. In case you do have `qtpaths` installed in your `PATH` but it is named differently (i.e. `qtpaths6`), or if it is installed outside of your `PATH` (i.e. `/usr/lib/qt6/bin/qtpaths`), please adjust the `qtpaths_bin` environment variable accordingly, prior to running the uninstaller script:
+
+      ```sh
+      # if it was installed for a single user
+      qtpaths_bin=/path/to/qtpaths ./uninstall.sh
+
+      # if it was installed system-wide
+      sudo qtpaths_bin=/path/to/qtpaths ./uninstall.sh
+      ```
+
+      Replace `/path/to/qtpaths` with the name or full path to the `qtpaths` utility you have installed.
