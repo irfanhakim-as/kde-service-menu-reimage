@@ -130,9 +130,13 @@ jobs:
         id: update_pkgbuild
         run: |
           # set variables
+          name="${{ needs.metadata.outputs.namespace }}"
           version="${{ needs.metadata.outputs.version }}"
           release="1"
           md5sum="${{ steps.package_asset.outputs.md5sum }}"
+
+          # update pkgname in PKGBUILD
+          sed -i "s/^pkgname=.*/pkgname=${name}/" PKGBUILD
 
           # update pkgver in PKGBUILD
           sed -i "s/^pkgver=.*/pkgver=${version}/" PKGBUILD
