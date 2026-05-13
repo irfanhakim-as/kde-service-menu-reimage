@@ -13,7 +13,7 @@ provides=()
 conflicts=('kde-service-menu-reimage' 'kde-service-menu-reimage-mod')
 replaces=()
 source=("${url}/releases/download/v${pkgver}/kde-service-menu-reimage_${pkgver}_${arch[0]}.tar.gz")
-md5sums=('17244c6296639bc4a8299e23c51109a9')
+md5sums=('fbf2401729208849e4e2cab266274a25')
 
 package() {
     # determine installation paths
