@@ -1,0 +1,134 @@
+name: Update AUR
+
+on:
+  push:
+    branches:
+      - master                    # monitor changes only in the master branch
+    paths:
+      - PKGBUILD                  # monitor changes to the PKGBUILD file
+  workflow_dispatch:              # allow manually triggering the workflow
+
+env:
+  REMOTE_HOST: aur.archlinux.org
+  REMOTE_HOST_USER: aur
+  REMOTE_HOST_PREFIX: ssh
+  REMOTE_REPO_NAMESPACE: ''
+  REMOTE_REPO_NAME: kf6-servicemenus-reimage
+  REMOTE_REPO_USER: irfanhakim
+  REMOTE_REPO_EMAIL: irfanhakim.as@yahoo.com
+
+jobs:
+  update-aur:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        id: configure_ssh
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.AUR_PRIVATE_KEY }}
+
+      - name: Add remote host to known hosts
+        id: add_remote_host
+        run: |
+          ssh-keyscan ${REMOTE_HOST} >> ~/.ssh/known_hosts
+
+      - name: Clone the remote repository
+        id: clone_remote_repo
+        run: |
+          # set variables
+          REMOTE_HOST_PREFIX="${{ env.REMOTE_HOST_PREFIX }}${{ env.REMOTE_HOST_PREFIX && '://' }}"
+          REMOTE_REPO_NAMESPACE="${{ env.REMOTE_REPO_NAMESPACE && ':' }}${{ env.REMOTE_REPO_NAMESPACE }}"
+
+          # clone remote repository
+          git clone ${REMOTE_HOST_PREFIX}${REMOTE_HOST_USER:-git}@${REMOTE_HOST}${REMOTE_REPO_NAMESPACE}/${REMOTE_REPO_NAME}.git
+
+      - name: Copy PKGBUILD to remote repository
+        id: copy_pkgbuild
+        run: |
+          cp PKGBUILD ${REMOTE_REPO_NAME}/
+
+      - name: Set up QEMU for multiarch
+        id: setup_qemu
+        run: |
+          docker run --rm --privileged tonistiigi/binfmt --install amd64
+
+      - name: Update SRCINFO
+        id: update_srcinfo
+        run: |
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          docker run --rm \
+            --platform linux/amd64 \
+            --interactive \
+            --user 1000:1000 \
+            -e HOME=/tmp \
+            -e BUILDDIR=/tmp \
+            -e PKGDEST=/tmp \
+            -e SRCDEST=/tmp \
+            -e LOGDEST=/tmp \
+            archlinux:base-devel \
+            bash -c "cat > /tmp/PKGBUILD && cd /tmp && makepkg --printsrcinfo" \
+            < PKGBUILD > .SRCINFO
+
+      - name: Check if package files have changes
+        id: check_changes
+        run: |
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          # add package files
+          git add .SRCINFO PKGBUILD
+
+          # check for changes
+          if git diff --cached --exit-code >/dev/null; then
+            echo "No changes have been made to the package files."
+            exists=false
+          else
+            # check if pkgname, pkgver, or pkgrel changed
+            if git diff --cached | grep -E "^[+-](pkgname|pkgver|pkgrel)="; then
+              # ensure both PKGBUILD and .SRCINFO have changes
+              pkgbuild_changed=$(git diff --cached --name-only | grep -c "^PKGBUILD$" || true)
+              srcinfo_changed=$(git diff --cached --name-only | grep -c "^\.SRCINFO$" || true)
+              if [ "${pkgbuild_changed}" -gt 0 ] && [ "${srcinfo_changed}" -gt 0 ]; then
+                echo "Package files have been updated and are pending commit."
+                exists=true
+              else
+                echo "WARN: Expected both PKGBUILD and .SRCINFO to change, but only one did. Skipping push."
+                exists=false
+              fi
+            else
+              echo "WARN: Package version and release number unchanged, skipping push."
+              exists=false
+            fi
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Commit and push updated package files
+        id: push_changes
+        if: steps.check_changes.outputs.exists == 'true'
+        run: |
+          # set variables
+          source PKGBUILD
+          name="${pkgname}"
+          version="${pkgver}"
+          release="${pkgrel}"
+
+          # change working directory
+          cd ${REMOTE_REPO_NAME}
+
+          # configure git
+          git config --local user.name "${REMOTE_REPO_USER:-forgejo-actions[bot]}"
+          git config --local user.email "${REMOTE_REPO_EMAIL:-forgejo-actions[bot]@noreply.git.moekai.net}"
+
+          # commit changes
+          git commit -m "Update ${name} to ${version}-${release}"
+
+          # push commit
+          git push -u origin HEAD
