@@ -1,11 +1,11 @@
 name: Update AUR
 
 on:
-  # push:
-  #   branches:
-  #     - master                    # monitor changes only in the master branch
-  #   paths:
-  #     - PKGBUILD                  # monitor changes to the PKGBUILD file
+  push:
+    branches:
+      - master                    # monitor changes only in the master branch
+    paths:
+      - PKGBUILD                  # monitor changes to the PKGBUILD file
   workflow_dispatch:              # allow manually triggering the workflow
 
 env:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Check out the repository
         id: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up SSH
         id: configure_ssh
@@ -51,18 +51,29 @@ jobs:
         run: |
           cp PKGBUILD ${REMOTE_REPO_NAME}/
 
+      - name: Set up QEMU for multiarch
+        id: setup_qemu
+        run: |
+          docker run --rm --privileged tonistiigi/binfmt --install amd64
+
       - name: Update SRCINFO
         id: update_srcinfo
         run: |
           # change working directory
           cd ${REMOTE_REPO_NAME}
 
-          docker run --rm -v ${PWD}:/pkgbuild -w /pkgbuild archlinux:base-devel bash -c "
-          pacman -Sy --noconfirm base-devel && \
-          useradd builder -m && \
-          echo 'builder ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers && \
-          chmod -R a+rw . && \
-          sudo -u builder makepkg --printsrcinfo > .SRCINFO"
+          docker run --rm \
+            --platform linux/amd64 \
+            --interactive \
+            --user 1000:1000 \
+            -e HOME=/tmp \
+            -e BUILDDIR=/tmp \
+            -e PKGDEST=/tmp \
+            -e SRCDEST=/tmp \
+            -e LOGDEST=/tmp \
+            archlinux:base-devel \
+            bash -c "cat > /tmp/PKGBUILD && cd /tmp && makepkg --printsrcinfo" \
+            < PKGBUILD > .SRCINFO
 
       - name: Check if package files have changes
         id: check_changes
@@ -80,8 +91,16 @@ jobs:
           else
             # check if pkgname, pkgver, or pkgrel changed
             if git diff --cached | grep -E "^[+-](pkgname|pkgver|pkgrel)="; then
-              echo "Package files have been updated and are pending commit."
-              exists=true
+              # ensure both PKGBUILD and .SRCINFO have changes
+              pkgbuild_changed=$(git diff --cached --name-only | grep -c "^PKGBUILD$" || true)
+              srcinfo_changed=$(git diff --cached --name-only | grep -c "^\.SRCINFO$" || true)
+              if [ "${pkgbuild_changed}" -gt 0 ] && [ "${srcinfo_changed}" -gt 0 ]; then
+                echo "Package files have been updated and are pending commit."
+                exists=true
+              else
+                echo "WARN: Expected both PKGBUILD and .SRCINFO to change, but only one did. Skipping push."
+                exists=false
+              fi
             else
               echo "WARN: Package version and release number unchanged, skipping push."
               exists=false
@@ -105,8 +124,8 @@ jobs:
           cd ${REMOTE_REPO_NAME}
 
           # configure git
-          git config --local user.name "${REMOTE_REPO_USER:-github-actions[bot]}"
-          git config --local user.email "${REMOTE_REPO_EMAIL:-github-actions[bot]@users.noreply.github.com}"
+          git config --local user.name "${REMOTE_REPO_USER:-forgejo-actions[bot]}"
+          git config --local user.email "${REMOTE_REPO_EMAIL:-forgejo-actions[bot]@noreply.git.moekai.net}"
 
           # commit changes
           git commit -m "Update ${name} to ${version}-${release}"

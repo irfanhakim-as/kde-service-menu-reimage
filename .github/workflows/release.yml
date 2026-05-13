@@ -1,11 +1,11 @@
 name: Manage version, release, and PKGBUILD
 
 on:
-  push:
-    branches:
-      - master                    # monitor changes only in the master branch
-    paths:
-      - doc/package.conf          # monitor changes to the package metadata file
+  # push:
+  #   branches:
+  #     - master                    # monitor changes only in the master branch
+  #   paths:
+  #     - doc/package.conf          # monitor changes to the package metadata file
   workflow_dispatch:              # allow manually triggering the workflow
 
 env:

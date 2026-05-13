@@ -1,0 +1,308 @@
+name: Manage version, release, and PKGBUILD
+
+on:
+  push:
+    branches:
+      - master                    # monitor changes only in the master branch
+    paths:
+      - doc/package.conf          # monitor changes to the package metadata file
+  workflow_dispatch:              # allow manually triggering the workflow
+
+env:
+  REPO_TOKEN: ${{ secrets.REPO_TOKEN }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  GH_REPOSITORY: "irfanhakim-as/kde-service-menu-reimage"
+  BOT_NAME: "forgejo-actions[bot]"
+  BOT_EMAIL: "forgejo-actions[bot]@noreply.git.moekai.net"
+  PACKAGE_ASSETS: "bin doc ServiceMenus *.sh README.md"
+  GENERATE_RELEASE_NOTES: "false"
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    env:
+      METADATA_FILE: "doc/package.conf"
+      REQUIRED_VARS: "namespace version arch"
+    outputs:
+      version: ${{ steps.get_metadata.outputs.version }}
+      namespace: ${{ steps.get_metadata.outputs.namespace }}
+      arch: ${{ steps.get_metadata.outputs.arch }}
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.REPO_TOKEN }}
+          fetch-depth: 0
+
+      - name: Source metadata file and export variables
+        id: get_metadata
+        run: |
+          # source values from metadata file
+          source "${METADATA_FILE}"
+
+          for var in ${REQUIRED_VARS}; do
+            # ensure variable is set
+            key="__${var}__"
+            if [ -z "${!key}" ]; then
+              echo "ERROR: Required variable \"${key}\" was not set successfully."
+              exit 1
+            fi
+            # export variable to output
+            echo "${var}=${!key}" | tee -a ${GITHUB_OUTPUT}
+          done
+
+  check:
+    runs-on: ubuntu-latest
+    needs: metadata
+    env:
+      VERSION: ${{ needs.metadata.outputs.version }}
+    outputs:
+      forgejo_release_exists: ${{ steps.check_forgejo_release.outputs.exists }}
+      github_release_exists: ${{ steps.check_github_release.outputs.exists }}
+    steps:
+      - name: Check if Forgejo release exists
+        id: check_forgejo_release
+        run: |
+          # check if release of said version exists via Forgejo API
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token ${REPO_TOKEN}" \
+            "${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}/releases/tags/v${VERSION}")
+
+          if [ "${status_code}" = "200" ]; then
+            echo "Forgejo release v${VERSION} already exists."
+            exists=true
+          else
+            echo "Forgejo release v${VERSION} has not been created."
+            exists=false
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Check if GitHub release exists
+        id: check_github_release
+        run: |
+          # check if release of said version exists via GitHub API
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token ${GH_TOKEN}" \
+            "https://api.github.com/repos/${GH_REPOSITORY}/releases/tags/v${VERSION}")
+
+          if [ "${status_code}" = "200" ]; then
+            echo "GitHub release v${VERSION} already exists."
+            exists=true
+          else
+            echo "GitHub release v${VERSION} has not been created."
+            exists=false
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+
+  go:
+    runs-on: ubuntu-latest
+    needs: [metadata, check]
+    if: needs.check.outputs.forgejo_release_exists == 'false' || needs.check.outputs.github_release_exists == 'false'
+    env:
+      VERSION: ${{ needs.metadata.outputs.version }}
+      NAMESPACE: ${{ needs.metadata.outputs.namespace }}
+      ARCH: ${{ needs.metadata.outputs.arch }}
+    steps:
+      - name: Check out the repository
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.REPO_TOKEN }}
+          fetch-depth: 0
+
+      - name: Update version in source files
+        id: update_version
+        run: |
+          # update version badge in markdown files
+          find . -type f -name "*.md" -exec sed -i "s/\(Version-\)[0-9]*\.[0-9]*\.[0-9]*\(-informational\)/\1${VERSION}\2/g;s/\[Version: [0-9]*\.[0-9]*\.[0-9]*\]/\[Version: ${VERSION}\]/g" {} +
+
+          # update version in shell files
+          find . -type f -name "*.sh" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${VERSION})/g" {} +
+
+          # update version in binary files
+          find ./bin -type f -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${VERSION})/g" {} +
+
+          # update version in config files
+          find ./doc -type f -name "*.config" -exec sed -i "s/version=.*/version=${VERSION}/g" {} +
+
+          # update version in service menu .desktop files
+          find ./ServiceMenus -type f -name "*.desktop" -exec sed -i -E "s/kde-service-menu-reimage \(version [0-9]+\.[0-9]+(\.[0-9]+)?\)/kde-service-menu-reimage (version ${VERSION})/g" {} +
+
+      - name: Package assets into archive
+        id: package_asset
+        run: |
+          # package required assets into a tar.gz archive
+          archive="${NAMESPACE}_${VERSION}_${ARCH}.tar.gz"
+          tar -czvf "${archive}" ${PACKAGE_ASSETS}
+
+          # export result to output
+          echo "asset=${archive}" | tee -a ${GITHUB_OUTPUT}
+          echo "md5sum=$(md5sum "${archive}" | awk '{print $1}')" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Update PKGBUILD
+        id: update_pkgbuild
+        env:
+          MD5SUM: ${{ steps.package_asset.outputs.md5sum }}
+        run: |
+          release="1"
+
+          # update pkgver in PKGBUILD
+          sed -i "s/^pkgver=.*/pkgver=${VERSION}/" PKGBUILD
+
+          # reset the pkgrel number to 1
+          sed -i "s/^pkgrel=.*/pkgrel=${release}/" PKGBUILD
+
+          # update the md5sums array with the new md5sum
+          sed -i "s/^md5sums=.*/md5sums=('${MD5SUM}')/" PKGBUILD
+
+      - name: Check if files have changes
+        id: check_changes
+        env:
+          ASSET: ${{ steps.package_asset.outputs.asset }}
+        run: |
+          # add local files except asset
+          git add . -- ":!${ASSET}"
+
+          # determine if changes were made
+          if git diff --cached --exit-code >/dev/null; then
+            echo "No changes have been made."
+            exists=false
+          else
+            echo "Changes have been made and are pending commit."
+            exists=true
+          fi
+
+          # export result to output
+          echo "exists=${exists}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Commit and push updated files
+        id: push_changes
+        if: steps.check_changes.outputs.exists == 'true'
+        run: |
+          # configure git user
+          git config --local user.name "${BOT_NAME}"
+          git config --local user.email "${BOT_EMAIL}"
+
+          # commit changes
+          git commit -m "Bump version to ${VERSION}"
+
+          # push changes to current remote branch
+          git push -u origin HEAD
+
+      - name: Get commit messages since last release
+        id: get_commits
+        run: |
+          # get previous version
+          prev_version=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "HEAD")
+
+          # get commits between versions
+          if [[ "${prev_version}" != "HEAD" ]]; then
+            prev_version="${prev_version}..HEAD"
+          fi
+          commits="$(git log "${prev_version}" --oneline | base64 -w 0)"
+
+          # export result to output
+          echo "commits=${commits}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Create Forgejo release
+        id: create_forgejo_release
+        if: needs.check.outputs.forgejo_release_exists == 'false'
+        env:
+          COMMITS: ${{ steps.get_commits.outputs.commits }}
+        run: |
+          # determine main branch
+          main_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          # decode the commit messages
+          decoded_commits=$(echo "${COMMITS}" | base64 --decode)
+          # prepare release notes
+          release_notes="Release v${VERSION}.\n\n**Changes**:\n\n${decoded_commits}"
+
+          # create release via Forgejo API
+          response=$(curl -X POST \
+            -H "Authorization: token ${REPO_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}/releases" \
+            -d "$(jq -n \
+              --arg tag "v${VERSION}" \
+              --arg name "v${VERSION}" \
+              --arg body "$(echo -e "${release_notes}")" \
+              --arg target "${main_branch}" \
+              '{tag_name: $tag, name: $name, body: $body, target_commitish: $target}')")
+
+          # validate response
+          release_id=$(echo "${response}" | jq -r '.id')
+          if [ "${release_id}" = "null" ] || [ -z "${release_id}" ]; then
+            echo "ERROR: Failed to create Forgejo release. Response: ${response}"
+            exit 1
+          fi
+
+          # export release id to output
+          echo "release_id=${release_id}" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Upload asset to Forgejo release
+        id: upload_forgejo_asset
+        if: needs.check.outputs.forgejo_release_exists == 'false'
+        env:
+          ASSET: ${{ steps.package_asset.outputs.asset }}
+          RELEASE_ID: ${{ steps.create_forgejo_release.outputs.release_id }}
+        run: |
+          # upload asset to the Forgejo release
+          curl -s -X POST \
+            -H "Authorization: token ${REPO_TOKEN}" \
+            -F "attachment=@${ASSET}" \
+            "${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}/releases/${RELEASE_ID}/assets?name=${ASSET}"
+
+      - name: Create GitHub release
+        id: create_github_release
+        if: needs.check.outputs.github_release_exists == 'false'
+        env:
+          COMMITS: ${{ steps.get_commits.outputs.commits }}
+        run: |
+          # determine main branch
+          main_branch=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          # decode the commit messages
+          decoded_commits=$(echo "${COMMITS}" | base64 --decode)
+          # prepare release notes
+          release_notes="Release v${VERSION}.\n\n**Changes**:\n\n${decoded_commits}"
+
+          # create release via GitHub API
+          response=$(curl -X POST \
+            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Content-Type: application/json" \
+            "https://api.github.com/repos/${GH_REPOSITORY}/releases" \
+            -d "$(jq -n \
+              --arg tag "v${VERSION}" \
+              --arg name "v${VERSION}" \
+              --arg body "$(echo -e "${release_notes}")" \
+              --arg target "${main_branch}" \
+              --argjson generate_release_notes "${GENERATE_RELEASE_NOTES}" \
+              '{tag_name: $tag, name: $name, body: $body, target_commitish: $target, generate_release_notes: $generate_release_notes}')")
+
+          # validate response
+          upload_url=$(echo "${response}" | jq -r '.upload_url')
+          if [ "${upload_url}" = "null" ] || [ -z "${upload_url}" ]; then
+            echo "ERROR: Failed to create GitHub release. Response: ${response}"
+            exit 1
+          fi
+
+          # export upload url to output (strips trailing {?name,label} template)
+          echo "upload_url=$(echo "${upload_url}" | sed 's/{.*}//')" | tee -a ${GITHUB_OUTPUT}
+
+      - name: Upload asset to GitHub release
+        id: upload_github_asset
+        if: needs.check.outputs.github_release_exists == 'false'
+        env:
+          ASSET: ${{ steps.package_asset.outputs.asset }}
+          UPLOAD_URL: ${{ steps.create_github_release.outputs.upload_url }}
+        run: |
+          # upload asset to the GitHub release
+          curl -s -X POST \
+            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Content-Type: application/octet-stream" \
+            --data-binary "@${ASSET}" \
+            "${UPLOAD_URL}?name=${ASSET}"
