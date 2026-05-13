@@ -1,11 +1,11 @@
 name: Update AUR
 
 on:
-  push:
-    branches:
-      - master                    # monitor changes only in the master branch
-    paths:
-      - PKGBUILD                  # monitor changes to the PKGBUILD file
+  # push:
+  #   branches:
+  #     - master                    # monitor changes only in the master branch
+  #   paths:
+  #     - PKGBUILD                  # monitor changes to the PKGBUILD file
   workflow_dispatch:              # allow manually triggering the workflow
 
 env:
